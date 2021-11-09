@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.item {
+  min-width: 50vh;
+}
+
+.centered {
+  position: fixed;
+  top: 95%;
+  left: 50%;
+  width: 400px;
+  transform: translate(-50%, -50%);
+}
+
+.main-container {
+  height: calc(100vh - 60px);
+}
+
+

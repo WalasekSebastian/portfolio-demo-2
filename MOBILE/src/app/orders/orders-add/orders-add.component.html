@@ -1,0 +1,110 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mv/orders"></ion-back-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Dodaj</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-select placeholder="Montaż" interface="action-sheet" [(ngModel)]="install">
+      <ion-select-option *ngFor="let install of dataInstalls;" [value]="install.id">{{install.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-select placeholder="Priorytet" interface="action-sheet" [(ngModel)]="priorityStatus">
+      <ion-select-option *ngFor="let data of dataPriorityStatus;" [value]="data.id">{{data.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <form clrForm *ngIf="priorityStatus == 4">
+    <ion-item>
+      <ion-label>Data</ion-label>
+      <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="priorityDate" [ngModelOptions]="{standalone: true}"
+        monthNames="Styczeń, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Paździerenik, Listopad, Grudzień"
+        monthShortNames="Sty, Lut, Mar, Kwi, Maj, Cze, Lip, Sie, Wrz, Paź, Lis, Gru" cancelText="Anuluj" doneText="Wybierz"></ion-datetime>
+    </ion-item>
+  </form>
+
+
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="!isOpenChange">
+    <ion-item>
+      <ion-input placeholder="Nazwa" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Ilość" type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select placeholder="jm" interface="action-sheet" formControlName="unit">
+        <ion-select-option *ngFor="let unit of dataUnits;" [value]="unit.shortName">{{unit.shortName}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row class="btn">
+        <ion-col>
+          <ion-button type="submit" [disabled]="!form.valid">DODAJ</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <form [formGroup]="formChange" (ngSubmit)="submit()" *ngIf="isOpenChange">
+    <ion-item>
+      <ion-label>
+        {{itemChange.name}}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Ilość" type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        {{itemChange.unit}}
+      </ion-label>
+    </ion-item>
+    <ion-grid>
+      <ion-row class="btn">
+        <ion-col>
+          <ion-button color="light" (click)="cancel()">Anuluj</ion-button>
+          <ion-button color="secondary" [disabled]="!formChange.valid" (click)="submitChange()">ZMIEŃ ILOŚĆ</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <ion-grid>
+    <ion-row *ngFor="let item of dataList; let i = index">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-col>
+            <div>{{item.name}}</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>{{item.qty}} {{item.unit}}</div>
+          </ion-col>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="dataList.splice(i, 1)">Usuń</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="start">
+          <ion-item-option color="secondary" (click)="changeOpen(item)">Zmień ilość</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row class="btn">
+      <ion-col>
+        <ion-button (click)="presentAlert()" [disabled]="!btnValid">WYŚLIJ ZAPOTRZEBOWANIE</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

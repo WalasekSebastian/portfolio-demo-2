@@ -1,0 +1,162 @@
+<clr-modal [(clrModalOpen)]="basic" [clrModalSize]='sizeModal' [clrModalClosable]="false">
+    <h3 class="modal-title">Dodaj Pracownika</h3>
+    <div class="modal-body">
+      <form clrStepper [formGroup]="form" (ngSubmit)="submit()">
+        <clr-stepper-panel formGroupName="name">
+          <clr-step-title>Dane użytkownika</clr-step-title>
+          <clr-step-content *clrIfExpanded>
+            <clr-input-container>
+              <label>Imię</label>
+              <input clrInput formControlName="firstName" />
+              <clr-control-error *clrIfError="'required'">Imię jest wymagane</clr-control-error>
+            </clr-input-container>
+      
+            <clr-input-container>
+              <label>Nazwisko</label>
+              <input clrInput formControlName="lastName" />
+              <clr-control-error *clrIfError="'required'">Nazwisko jest wymagane</clr-control-error>
+            </clr-input-container>
+            <clr-input-container>
+              <label>Login</label>
+              <input clrInput formControlName="login" />
+              <clr-control-error *clrIfError="'required'">Login jest wymagany</clr-control-error>
+            </clr-input-container>
+            <clr-checkbox-container>
+              <label>Uprawnienia</label>
+              <clr-checkbox-wrapper>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  name="admin"
+                  [value]="isAdmin"
+                  [checked]="isAdmin"
+                  (change)="isAdminChenge()"/>
+                <label>Administrator</label>
+              </clr-checkbox-wrapper>
+              <clr-checkbox-wrapper>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  name="kierownik"
+                  [value]="isKierownik"
+                  [checked]="isKierownik"
+                  (change)="isKierownikChenge()"/>
+                <label>Kierownik</label>
+              </clr-checkbox-wrapper>
+            </clr-checkbox-container>
+      
+            <button clrStepButton="next">dalej</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+      
+        <clr-stepper-panel formGroupName="contact">
+          <clr-step-title>Dane kontaktowe</clr-step-title>
+          <clr-step-content *clrIfExpanded>
+            <clr-input-container>
+              <label>E-mail</label>
+              <input clrInput formControlName="email" />
+              <clr-control-error *clrIfError="'required'">E-mail jest wymagany</clr-control-error>
+            </clr-input-container>
+            <clr-input-container (change)="validator()">
+              <label>Telefon</label>
+              <input clrInput formControlName="phone" />
+              <clr-control-error *clrIfError="'required'">Telefon jest wymagany</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Podaj telefon w formie +48000000000</clr-control-error>
+            </clr-input-container>
+            <clr-checkbox-wrapper>
+              <input
+                type="checkbox"
+                clrCheckbox
+                name="notification"
+                [value]="isSMS"
+                [checked]="isSMS"
+                (change)="isSMSChenge()"
+                [disabled]="!checkNumber" />
+              <label>Powiadomienia SMS</label>
+            </clr-checkbox-wrapper>
+            <button clrStepButton="next">dalej</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+      
+        <clr-stepper-panel formGroupName="password">
+          <clr-step-title>Hasło</clr-step-title>
+          <clr-step-content *clrIfExpanded>
+
+            <clr-password-container>
+              <label>Hasło</label>
+              <input clrPassword type="password" formControlName="password" />
+              <clr-control-error *clrIfError="'required'">Hasło jest wymagane</clr-control-error>
+              <clr-control-error *clrIfError="'minlength'">Długość hasła min 6 znaków</clr-control-error>
+            </clr-password-container>
+
+            <clr-password-container>
+              <label>Powtórz hasło</label>
+              <input clrPassword type="password" formControlName="confirm" />
+              <clr-control-error *clrIfError="'required'">Powtórzenie hasła jest wymagane</clr-control-error>
+              <clr-control-error *clrIfError="'mustMatch'">Błedne hasło</clr-control-error>
+            </clr-password-container>
+
+            <button clrStepButton="next">dalej</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+        <clr-stepper-panel formGroupName="workRate">
+          <clr-step-title>Wynagrodzenie</clr-step-title>
+          <clr-step-content *clrIfExpanded>
+            <clr-input-container>
+              <label>Stawka za h pracy</label>
+              <input clrInput formControlName="rateStd" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+              <label>Stawka za 1 nadgodzinę pracy</label>
+              <input clrInput formControlName="overStd" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+              <label>Stawka za h pracy na montazu alternatywnym</label>
+              <input clrInput formControlName="rateAlter" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+              <label>Stawka za 1 nadgodzinę pracy na montazu alternatywnym</label>
+              <input clrInput formControlName="overAlter" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+              <label>Stawka za h pracy w dni wolne</label>
+              <input clrInput formControlName="rateStdHoliday" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+              <label>Stawka za 1 nadgodzinę w dni wolne</label>
+              <input clrInput formControlName="overStdHoliday" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+              <label>Stawka za h pracy w dni wolne na montażu alternatywnym</label>
+              <input clrInput formControlName="rateAlterHoliday" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+              <label>Stawka za 1 nadgodzinę w dni wolne na montażu alternatywnym</label>
+              <input clrInput formControlName="overAlterHoliday" />
+              <clr-control-error *clrIfError="'required'">Podaj stawkę</clr-control-error>
+              <clr-control-error *clrIfError="'pattern'">Tylko cyfry, separator kropka</clr-control-error>
+          </clr-input-container>
+
+              <button clrStepButton="submit">DODAJ</button>
+          </clr-step-content>
+      </clr-stepper-panel>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-warning" (click)="close()">Anuluj</button>
+  </div>
+  </clr-modal>

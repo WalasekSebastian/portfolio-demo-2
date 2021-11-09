@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="card item">
+    <div class="card-header">
+      Jednostki miary<br>
+      <button class="btn btn-primary" (click)="openAdd = true">Dodaj nową</button>
+    </div>
+    <div class="card-block">
+      <div class="card-text">
+        <clr-datagrid>
+          <clr-dg-column [clrDgField]="'name'">Pełna nazwa</clr-dg-column>
+          <clr-dg-column [clrDgField]="'shortName'">Skrócona nazwa</clr-dg-column>
+
+          <clr-dg-row *clrDgItems="let unit of unitsData">
+            <clr-dg-action-overflow>
+              <button class="action-item" (click)="openEditModal(unit)">Edytuj</button>
+            </clr-dg-action-overflow>
+            <clr-dg-cell>{{unit?.name}}</clr-dg-cell>
+            <clr-dg-cell>{{unit?.shortName}}</clr-dg-cell>
+          </clr-dg-row>
+          <clr-dg-footer>
+            <clr-dg-pagination #paginationWorker [clrDgPageSize]="5">
+              <clr-dg-page-size [clrPageSizeOptions]="[5,10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+              {{paginationWorker.firstItem + 1}} - {{paginationWorker.lastItem + 1}} z {{paginationWorker.totalItems}}
+              wpisów
+            </clr-dg-pagination>
+          </clr-dg-footer>
+        </clr-datagrid>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="addForm" (ngSubmit)="saveAdd()">
+  <clr-modal [(clrModalOpen)]="openAdd" [clrModalClosable]="false">
+    <h3 class="modal-title">Dodanie nowej jednostki miary</h3>
+    <div class="modal-body">
+
+      <clr-input-container>
+        <label>Pełna nazwa</label>
+        <input clrInput formControlName="name" />
+        <clr-control-error *clrIfError="'required'">Nazwa jest wymagana</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Skrócona nazwa</label>
+        <input clrInput formControlName="shortName" />
+        <clr-control-error *clrIfError="'required'">Skrócona nazwa jest wymagana</clr-control-error>
+      </clr-input-container>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="closeAdd()">Anuluj</button>
+      <button type="button" class="btn btn-primary" type="submit" [disabled]="!addForm.valid">Dodaj</button>
+    </div>
+  </clr-modal>
+</form>
+
+<form [formGroup]="editForm" (ngSubmit)="saveEdit()">
+  <clr-modal [(clrModalOpen)]="openEdit" [clrModalClosable]="false">
+    <h3 class="modal-title">Edycja jednostki miary</h3>
+    <div class="modal-body">
+
+      <clr-input-container>
+        <label>Pełna nazwa</label>
+        <input clrInput formControlName="name" />
+        <clr-control-error *clrIfError="'required'">Nazwa jest wymagana</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Skrócona nazwa</label>
+        <input clrInput formControlName="shortName" />
+        <clr-control-error *clrIfError="'required'">Skrócona nazwa jest wymagana</clr-control-error>
+      </clr-input-container>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="closeEdit()">Anuluj</button>
+      <button type="button" class="btn btn-primary" type="submit" [disabled]="!editForm.valid">Aktualizuj</button>
+    </div>
+  </clr-modal>
+</form>
+

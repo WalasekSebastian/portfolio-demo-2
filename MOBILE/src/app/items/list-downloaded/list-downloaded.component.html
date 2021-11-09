@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mv/downloaded"></ion-back-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title >{{installName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row *ngFor="let item of dataItems; let i = index">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-col>
+            <div>{{item.name}}</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>{{item.quantity}} {{item.unitName}}</div>
+          </ion-col>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-row>
+  </ion-grid>
+</ion-content>

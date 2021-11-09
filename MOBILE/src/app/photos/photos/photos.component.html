@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Lista załączników</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-list-header>
+      Wybierz montaż:
+    </ion-list-header>
+    <ion-item *ngFor="let install of dataList" (click)="installBtn(install.id)">
+      <ion-label>
+        <h2>{{install?.name}}</h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+ 
+</ion-content>

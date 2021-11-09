@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Kontakty</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar placeholder="Szukaj..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+
+      <div *ngFor="let data of contactsData | filter: filterTerm">
+
+        <ion-item lines="none" auto-hide="false" detail="false" (click)="data.toogle = !data.toogle">
+          <ion-icon name="file-tray-stacked-outline" slot="start" *ngIf="data.toogle === false"></ion-icon>
+          <ion-icon name="arrow-down-outline" slot="start" *ngIf="data.toogle !== false"></ion-icon>
+          <ion-label>{{data.name}}</ion-label>          
+        </ion-item>
+        <ion-list *ngIf="data.toogle" class="block" style="margin-left: 20px;">
+          <ion-item *ngFor="let contact of data.contacts" lines="none" detail="false">
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            <ion-label>{{contact.name}}</ion-label>
+            <ion-label><a href="tel:{{contact.phone}}">{{contact.phone}}</a></ion-label>
+          </ion-item>
+        </ion-list>       
+      </div>
+</ion-content>

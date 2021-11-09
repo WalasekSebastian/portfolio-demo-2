@@ -1,0 +1,37 @@
+<div>
+    <clr-datagrid>
+        <clr-dg-column [clrDgField]="'status'">Status</clr-dg-column>
+        <clr-dg-column [clrDgField]="'installName'">Nazwa montażu</clr-dg-column>
+        <clr-dg-column [clrDgField]="'name'">Nazwa</clr-dg-column>
+        <clr-dg-column [clrDgField]="'quantity'">Ilość</clr-dg-column>
+        <clr-dg-column [clrDgField]="'unitName'">Jm</clr-dg-column>
+        <clr-dg-column [clrDgField]="'userName'">kto dodał</clr-dg-column>
+        <clr-dg-column [clrDgField]="'dateAdd'">Data dodania</clr-dg-column>
+        <clr-dg-column [clrDgField]="'dateModify'">Data ostatniej modyfikacji</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let item of itemsData">
+            <clr-dg-action-overflow>
+                <button class="action-item" (click)="edit(item.orderId, item.installName, item.installId)">Zobacz</button>
+            </clr-dg-action-overflow>
+            <clr-dg-cell>{{item?.status}}</clr-dg-cell>
+            <clr-dg-cell>{{item?.installName}}</clr-dg-cell>
+            <clr-dg-cell>{{item?.name}}</clr-dg-cell>
+            <clr-dg-cell>{{item?.quantity}}</clr-dg-cell>
+            <clr-dg-cell>{{item?.unitName}}</clr-dg-cell>
+            <clr-dg-cell>{{item?.userName}}</clr-dg-cell>
+            <clr-dg-cell>{{item?.dateAdd | date:'dd-MM-yyyy HH:mm'}}</clr-dg-cell>
+            <clr-dg-cell>{{item?.dateModify | date:'dd-MM-yyyy HH:mm'}}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} przedmiotów
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+</div>
+
+<div *ngIf="toogleEdit">
+    <app-orders-edit (newItemEvent)="editClose($event)" [orderId]="orderId" [installName]="installName" [installId]="installId"></app-orders-edit>
+</div>

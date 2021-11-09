@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mv/photos"></ion-back-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title >Załączniki</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content >
+  <ion-card *ngFor="let img of sortData">
+    <img *ngIf="img" [src]="img.src" class="img" />
+    <ion-card-header>
+      <ion-card-title>{{img.date | date:'dd-MM-yyyy'}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{img.desc}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

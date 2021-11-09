@@ -1,0 +1,114 @@
+<clr-modal [(clrModalOpen)]="basic" [clrModalSize]='sizeModal' [clrModalClosable]="false">
+    <h3 class="modal-title">Nowe zapotrzebowanie</h3>
+    <div class="modal-body">
+
+        <form clrForm>
+            <clr-select-container>
+                <label>Montaż:</label>
+                <select clrSelect name="status" [(ngModel)]="install">
+                    <option *ngFor="let install of dataInstalls;" [value]="install.id"> {{install.name}}
+                    </option>
+                </select>
+            </clr-select-container>
+        </form>
+
+        <form clrForm>
+            <clr-select-container>
+                <label>Priorytet:</label>
+                <select clrSelect name="status" [(ngModel)]="priorityStatus">
+                    <option *ngFor="let data of dataPriorityStatus;" [value]="data.id"> {{data.name}}
+                    </option>
+                </select>
+            </clr-select-container>
+        </form>
+
+        <form clrForm *ngIf="priorityStatus == 4">
+            <clr-date-container>
+                <label>Data:</label>
+                <input clrDate placeholder="Wybierz datę" [(ngModel)]="priorityDate"
+                    [ngModelOptions]="{standalone: true}" />
+            </clr-date-container>
+        </form>
+
+
+
+        <form clrForm [formGroup]="form" (ngSubmit)="submit()">
+            <div class="container">
+                <clr-input-container class="inputFlex">
+                    <input clrInput #focus formControlName="name" placeholder="Nazwa" />
+                </clr-input-container>
+                <clr-input-container class="inputFlex">
+                    <input clrInput formControlName="qty" type='number' placeholder="Ilość" />
+                </clr-input-container>
+                <clr-select-container>
+                    <label>Jm:</label>
+                    <select clrSelect name="unit" formControlName="unit">
+                        <option *ngFor="let unit of dataUnits;" [value]="unit.shortName"> {{unit.shortName}}
+                        </option>
+                    </select>
+                </clr-select-container>
+                <div class="item">
+                    <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Dodaj</button>
+                </div>
+            </div>
+        </form>
+
+
+
+        <div>
+            <clr-datagrid>
+                <clr-dg-column [clrDgField]="'nazwa'">Nazwa</clr-dg-column>
+                <clr-dg-column [clrDgField]="'ilosc'">Ilość</clr-dg-column>
+                <clr-dg-column [clrDgField]="'jm'">jm</clr-dg-column>
+
+                <clr-dg-row *clrDgItems="let item of dataList; let i = index">
+                    <clr-dg-action-overflow>
+                        <button class="action-item" (click)="changeQtyOpen(item)">Zmień ilość</button>
+                        <button class="action-item remove" (click)="dataList.splice(i, 1)">Usuń</button>
+                    </clr-dg-action-overflow>
+                    <clr-dg-cell>{{item.name}}</clr-dg-cell>
+                    <clr-dg-cell>{{item.qty}}</clr-dg-cell>
+                    <clr-dg-cell>{{item.unit}}</clr-dg-cell>
+                </clr-dg-row>
+
+                <clr-dg-footer>
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                        <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} rzeczy
+                    </clr-dg-pagination>
+                </clr-dg-footer>
+            </clr-datagrid>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="addOrder()"
+            *ngIf="(install !== null) && (priorityStatus !== null)">Zapisz</button>
+        <button type="button" class="btn btn-warning" (click)="close()">Anuluj</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openChengeQtyModal" clrModalSize='sm' [clrModalClosable]="false">
+    <h3 class="modal-title">Zmina ilości: {{changeItem?.name}}</h3>
+    <div class="modal-body">
+        <form clrForm [formGroup]="formChange">
+            <div class="container">
+                <div class="clr-row">
+                    <div class="clr-col-10">
+                        <clr-input-container class="inputFlex">
+                            <input clrInput formControlName="qty" type='number' placeholder="Ilość" />
+                        </clr-input-container>
+                    </div>
+                    <div class="clr-col-2 unit">
+                        {{changeItem?.unit}}
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="openChengeQtyModal = false">Anuluj</button>
+        <button type="button" class="btn btn-primary" [disabled]="!formChange.valid"
+            (click)="submitChange()">Zmień</button>
+    </div>
+</clr-modal>

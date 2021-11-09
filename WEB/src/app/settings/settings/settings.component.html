@@ -1,0 +1,26 @@
+<div class="main-container">
+    <div class="content-container">
+        <clr-vertical-nav>
+            <a clrVerticalNavLink routerLink="./units" routerLinkActive="active" *ngIf="checkPermissions()">
+                <clr-icon shape="cog"></clr-icon>
+                Jednostki miary
+            </a>
+            <a clrVerticalNavLink routerLink="./reset" routerLinkActive="active">
+                <clr-icon shape="lock"></clr-icon>
+                Zmiana hasła
+            </a>
+            <a clrVerticalNavLink routerLink="./alternative" routerLinkActive="active" *ngIf="checkAdmin()">
+                <clr-icon shape="asterisk"></clr-icon>
+                Montaż 'alternatywny'
+            </a>
+            <a clrVerticalNavLink routerLink="./warehouse" routerLinkActive="active" *ngIf="checkAdmin()">
+                <clr-icon shape="objects"></clr-icon>
+                Montaż 'magazyn'
+            </a>
+        </clr-vertical-nav>
+        <div class="content-area">
+            <router-outlet></router-outlet>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,149 @@
+<ion-menu contentId="main-content" type="overlay">
+  <ion-content>
+    <ion-list id="inbox-list">
+
+      <ion-menu-toggle auto-hide="false">
+        <ion-item routerDirection="root" routerLink="/mv/dashboard" lines="none" detail="false"
+          routerLinkActive="selected">
+          <ion-icon name="clipboard-outline" slot="start"></ion-icon>
+          <ion-label>Okno główne</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+        <ion-item lines="none" auto-hide="false" detail="false" (click)="toogleWork = !toogleWork">
+          <ion-icon name="accessibility-outline" slot="start" *ngIf="toogleWork === false"></ion-icon>
+          <ion-icon name="arrow-down-outline" slot="start" *ngIf="toogleWork !== false"></ion-icon>
+          <ion-label>Praca</ion-label>
+        </ion-item>
+
+        <ion-list *ngIf="toogleWork" style="margin-left: 20px;">
+
+          <ion-menu-toggle auto-hide="false">
+
+            <ion-item routerDirection="root" routerLink="/mv/WorkHistory" lines="none" detail="false"
+              routerLinkActive="selected">
+              <ion-icon name="time-outline" slot="start"></ion-icon>
+              <ion-label>Historia Pracy</ion-label>
+            </ion-item>
+
+            <ion-item routerDirection="root" routerLink="/mv/AddWork" lines="none" detail="false"
+              routerLinkActive="selected">
+              <ion-icon name="cash-outline" slot="start"></ion-icon>
+              <ion-label>Dodaj pracę</ion-label>
+            </ion-item>
+
+          </ion-menu-toggle>
+        </ion-list>
+      <ion-menu-toggle>
+
+        <ion-item routerDirection="root" routerLink="/mv/orders" lines="none" detail="false"
+          routerLinkActive="selected">
+          <ion-icon name="bag-add-outline" slot="start"></ion-icon>
+          <ion-label>Zapotrzebowanie</ion-label>
+        </ion-item>
+
+        <ion-item routerDirection="root" routerLink="/mv/installAdd" lines="none" detail="false"
+          routerLinkActive="selected">
+          <ion-icon name="diamond-outline" slot="start"></ion-icon>
+          <ion-label>Dodaj montaż</ion-label>
+        </ion-item>
+
+      </ion-menu-toggle>
+
+      <ion-item lines="none" auto-hide="false" detail="false" (click)="toogleItem = !toogleItem">
+        <ion-icon name="archive-outline" slot="start" *ngIf="toogleItem === false"></ion-icon>
+        <ion-icon name="arrow-down-outline" slot="start" *ngIf="toogleItem !== false"></ion-icon>
+        <ion-label>Materiał</ion-label>
+      </ion-item>
+
+      <ion-list *ngIf="toogleItem" style="margin-left: 20px;">
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerDirection="root" routerLink="/mv/inInstall" lines="none" detail="false"
+            routerLinkActive="selected">
+            <ion-icon name="storefront-outline" slot="start"></ion-icon>
+            <ion-label>Spis materiałów</ion-label>
+          </ion-item>
+
+          <ion-item routerDirection="root" routerLink="/mv/downloaded" lines="none" detail="false"
+            routerLinkActive="selected">
+            <ion-icon name="receipt-outline" slot="start"></ion-icon>
+            <ion-label>Materiał użyty</ion-label>
+          </ion-item>
+
+          <ion-item routerDirection="root" routerLink="/mv/downloadItems" lines="none" detail="false"
+            routerLinkActive="selected">
+            <ion-icon name="construct-outline" slot="start"></ion-icon>
+            <ion-label>Pobierz materiał</ion-label>
+          </ion-item>
+
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-item lines="none" auto-hide="false" detail="false" (click)="toogle = !toogle">
+        <ion-icon name="file-tray-stacked-outline" slot="start" *ngIf="toogle === false"></ion-icon>
+        <ion-icon name="arrow-down-outline" slot="start" *ngIf="toogle !== false"></ion-icon>
+        <ion-label>Kontakty</ion-label>
+      </ion-item>
+
+      <ion-list *ngIf="toogle" style="margin-left: 20px;">
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerDirection="root" routerLink="/mv/workersContact" lines="none" detail="false"
+            routerLinkActive="selected">
+            <ion-icon name="people-outline" slot="start"></ion-icon>
+            <ion-label>Pracownicy</ion-label>
+          </ion-item>
+
+          <ion-item routerDirection="root" routerLink="/mv/installsContact" lines="none" detail="false"
+            routerLinkActive="selected">
+            <ion-icon name="storefront-outline" slot="start"></ion-icon>
+            <ion-label>Montaże</ion-label>
+          </ion-item>
+
+
+
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-item lines="none" auto-hide="false" detail="false" (click)="tooglePhotos = !tooglePhotos">
+        <ion-icon name="aperture-outline" slot="start" *ngIf="tooglePhotos === false"></ion-icon>
+        <ion-icon name="arrow-down-outline" slot="start" *ngIf="tooglePhotos !== false"></ion-icon>
+        <ion-label>Załączniki</ion-label>
+      </ion-item>
+
+      <ion-list *ngIf="tooglePhotos" style="margin-left: 20px;">
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerDirection="root" routerLink="/mv/photos" lines="none" detail="false"
+            routerLinkActive="selected">
+            <ion-icon name="images-outline" slot="start"></ion-icon>
+            <ion-label>Lista załączników</ion-label>
+          </ion-item>
+
+          <ion-item routerDirection="root" routerLink="/mv/addphoto" lines="none" detail="false"
+            routerLinkActive="selected">
+            <ion-icon name="camera-outline" slot="start"></ion-icon>
+            <ion-label>Dodaj załącznik</ion-label>
+          </ion-item>
+
+
+
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-item routerDirection="root" routerLink="/" lines="none" detail="false" routerLinkActive="selected"
+        (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        <ion-label>Wyloguj</ion-label>
+      </ion-item>
+
+    </ion-list>
+
+
+
+  </ion-content>
+  <p>v{{currentApplicationVersion}}</p>
+</ion-menu>
+
+<ion-router-outlet id="main-content"></ion-router-outlet>

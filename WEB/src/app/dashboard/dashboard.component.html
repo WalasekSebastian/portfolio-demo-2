@@ -1,0 +1,141 @@
+<div class="main-container">
+    <div class="content-container">
+        <div class="content-area">
+            <div class="clr-row">
+                <div class="clr-col-6" *ngIf="checkPermissions()">
+                    <div class="card" style="min-height: 390px;">
+                        <div class="card-header">
+                            Ostatnie wpisy pracowników
+                        </div>
+                        <div class="card-block">
+                            <div class="card-text">
+                                <clr-datagrid>
+                                    <clr-dg-column [clrDgField]="'name'">Imię i nazwisko</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'date'">Data</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'installName'">Montaż</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'timeWork'">Czas pracy</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'timeTravel'">Czas dojazdu</clr-dg-column>
+
+                                    <clr-dg-row *clrDgItems="let prac of workerData"
+                                        [ngClass]="{'tableColor': prac.timeDuration > 8, 'tablePriorityNeed': prac.timeDuration < 0, 'workLong': prac.timeDuration > 24}">
+                                        <clr-dg-action-overflow *ngIf="checkAdmin()">
+                                            <button class="action-item" (click)="editWork(prac.id)">Zobacz</button>
+                                            <button class="action-item remove" (click)="removeWork(prac.id)">Usuń</button>
+                                        </clr-dg-action-overflow>
+                                        <clr-dg-cell>{{prac?.name}}</clr-dg-cell>
+                                        <clr-dg-cell>{{prac?.date}}</clr-dg-cell>
+                                        <clr-dg-cell>{{prac?.installName}}</clr-dg-cell>
+                                        <clr-dg-cell>{{prac?.timeWork}}</clr-dg-cell>
+                                        <clr-dg-cell>{{prac?.timeTravel}}</clr-dg-cell>
+                                    </clr-dg-row>
+
+                                    <clr-dg-footer>
+                                        <div class="flexContainer">
+                                            <div class="legendRed"></div><span class="legendText">- brak czasu
+                                                zakończenia pracy</span>
+                                            <div class="legendYellow"></div><span class="legendText">- praca pow.
+                                                8h</span>
+                                                <div class="legendBlue"></div><span class="legendText">- data roz. &#8800; data zako.</span>
+                                        </div>
+                                        <clr-dg-pagination #pagination [clrDgPageSize]="5">
+                                            <clr-dg-page-size [clrPageSizeOptions]="[5,10,20,50,100]">Ilość na
+                                                stronie
+                                            </clr-dg-page-size>
+                                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z
+                                            {{pagination.totalItems}}
+                                            wpisów
+                                        </clr-dg-pagination>
+                                    </clr-dg-footer>
+                                </clr-datagrid>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clr-col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Ostatnio dodane zapotrzebowania
+                        </div>
+                        <div class="card-block">
+                            <div class="card-text">
+                                <clr-datagrid>
+                                    <clr-dg-column [clrDgField]="'status'">Status</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'priorityName'">Status</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'install'">Nazwa montażu</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'userName'">Kto dodał</clr-dg-column>
+                                    <clr-dg-column [clrDgField]="'dateCreated'">Data utworzenia</clr-dg-column>
+
+                                    <clr-dg-row *clrDgItems="let order of ordersData"
+                                        [ngClass]="{'tablePriorityNeed': order.priorityStatus === 1, 'tableColor': order.priorityStatus === 2}">
+                                        <clr-dg-action-overflow>
+                                            <button class="action-item"
+                                                (click)="edit(order.id, order.install, order.installId)">Zobacz</button>
+                                        </clr-dg-action-overflow>
+                                        <clr-dg-cell>{{order?.status}}</clr-dg-cell>
+                                        <clr-dg-cell *ngIf="order.priorityStatus === 4">{{order?.priorityName}}
+                                            {{order?.priorityDate | date:'dd-MM-yyyy'}}</clr-dg-cell>
+                                        <clr-dg-cell *ngIf="order.priorityStatus !== 4">{{order?.priorityName}}
+                                        </clr-dg-cell>
+                                        <clr-dg-cell>{{order?.install}}</clr-dg-cell>
+                                        <clr-dg-cell>{{order?.userName}}</clr-dg-cell>
+                                        <clr-dg-cell>{{order?.dateCreated | date:'dd-MM-yyyy HH:mm'}}</clr-dg-cell>
+                                    </clr-dg-row>
+
+                                    <clr-dg-footer>
+                                        <div class="flexContainer">
+                                            <div class="legendRed"></div><span class="legendText">- status PILNE</span>
+                                            <div class="legendYellow"></div><span class="legendText">- status NA
+                                                RANO</span>
+                                        </div>
+                                        <clr-dg-pagination #paginationOrder [clrDgPageSize]="5">
+                                            <clr-dg-page-size [clrPageSizeOptions]="[5,10,20,50,100]">Ilość na
+                                                stronie
+                                            </clr-dg-page-size>
+                                            {{paginationOrder.firstItem + 1}} - {{paginationOrder.lastItem + 1}} z
+                                            {{paginationOrder.totalItems}}
+                                            zamówień
+                                        </clr-dg-pagination>
+                                    </clr-dg-footer>
+                                </clr-datagrid>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clr-row">
+                <div class="clr-col-6">
+                    <div class="card" *ngIf="checkAdmin()">
+                        <div class="card-header">
+                            Informacja o zajętości dysków
+                        </div>
+                        <div class="card-block">
+                            <div *ngFor="let disk of hddInfo">
+                                <div class="progress-block">
+                                    <label>{{disk.name}}</label>
+                                    <clr-progress-bar [clrValue]="disk.perNotAvaiable" clrMax="100"></clr-progress-bar>
+                                    <span>{{disk.perNotAvaiable}}% ({{disk.notAvaiable}}/{{disk.totalSpace}}GB)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="toogleEdit">
+    <app-orders-edit (newItemEvent)="editClose($event)" [orderId]="orderId" [installName]="installName"
+        [installId]="installId"></app-orders-edit>
+</div>
+
+<div *ngIf="toogleEditWork">
+    <app-work-edit (newItemEvent)="editWorkClose($event)" [rejWorkId]="rejWorkId"></app-work-edit>
+</div>
+
+<div *ngIf="toogleRemoveWork">
+    <app-remove-work (newItemEvent)="removeWorkClose($event)" [rejWorkId]="rejWorkId"></app-remove-work>
+</div>

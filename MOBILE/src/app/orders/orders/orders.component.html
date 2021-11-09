@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Zapotrzebowanie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of dataList" >
+      <ion-item (click)="editBtn(item.id)">
+      <ion-label>
+        <h2>{{item?.install}}</h2>
+        <h3>Dodano: {{item?.dateCreated | date:'dd-MM-yyyy HH:mm'}}</h3>
+        <p><strong>{{item?.status}}</strong> | edycja: {{item?.lastModified | date:'dd-MM-yyyy HH:mm'}}</p>
+      </ion-label>
+    </ion-item>
+      <ion-item-options side="end" >
+        <ion-item-option color="danger" *ngIf="item?.status === 'Nowy'" (click)="remove(item.id)">Usuń</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="btnAdd()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

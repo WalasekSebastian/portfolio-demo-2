@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Dodaj nowy montaż</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-item>
+      <ion-input placeholder="Nazwa" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Imię" formControlName="firstName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Nazwisko" formControlName="lastName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="E-mail" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Telefon" formControlName="phone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Ulica" formControlName="street"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Numer domu" formControlName="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Kod pocztowy" formControlName="postalCode"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Miasto" formControlName="city"></ion-input>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row class="btn">
+        <ion-col>
+          <ion-button type="submit" [disabled]="!form.valid">DODAJ</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>

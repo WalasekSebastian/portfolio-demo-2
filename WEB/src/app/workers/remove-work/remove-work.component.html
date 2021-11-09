@@ -1,0 +1,14 @@
+<clr-modal [(clrModalOpen)]="basic" [clrModalSize]='sizeModal' [clrModalClosable]="false" >
+    <h3 class="modal-title">Usuwanie wpisu pracy {{rejWork?.user.name}}</h3>
+    <div class="modal-body">
+        <span>Montaż: {{rejWork?.install.name}}</span>
+        <p>Czy napewno chcesz usunąc wpis? <br>
+            Nie będzie możliwości przywrócenia danych</p>
+        
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" (click)="submit()">Usuń</button>
+        <button type="button" class="btn btn-warning-outline" (click)="close()">Anuluj</button>
+    </div>
+</clr-modal>

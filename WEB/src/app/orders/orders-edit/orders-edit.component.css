@@ -1,0 +1,18 @@
+.inputFlex {
+    display: flex;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+.item{
+    flex-grow: 4;
+}
+
+.unit {
+    margin-top: 25px;
+}
+

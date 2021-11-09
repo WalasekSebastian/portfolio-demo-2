@@ -1,0 +1,25 @@
+<nav class="subnav">
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="./list" routerLinkActive="active">Lista montaży</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" style="cursor: pointer;" (click)="addInstall()">Dodaj nowy montaż</a>
+    </li>
+    <li class="nav-item" *ngIf="checkPermissions()">
+      <a class="nav-link" routerLink="./works" routerLinkActive="active">Wykaz pracy</a>
+    </li>
+  </ul>
+</nav>
+
+<div *ngIf="toogle">
+  <app-installation-add (newItemEvent)="addInstallClose($event)"></app-installation-add>
+</div>
+
+<div class="main-container">
+  <div class="content-container">
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

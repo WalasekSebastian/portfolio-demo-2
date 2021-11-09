@@ -1,0 +1,75 @@
+<div class="clr-row">
+    <div class="clr-col-4">
+        <div class="card" style=" min-height: 302px;">
+            <div class="card-block">
+                <div class="card-text">
+                    <form clrForm [formGroup]="form" (ngSubmit)="submit()">
+                        <div class="containerColumn">
+
+                            <clr-combobox-container >
+                                <clr-combobox name="myState" required formControlName="install" (clrOpenChange)="clear($event)">
+                                    <clr-options>
+                                        <clr-option *clrOptionItems="let install of installs; field:'name'" [clrValue]="install">
+                                            {{install.name}}
+                                        </clr-option>
+                                    </clr-options>
+                                </clr-combobox>
+                                <clr-control-error>Wybierz montaż</clr-control-error>
+                            </clr-combobox-container>
+
+
+                            <clr-date-container>
+                                <input type="date" formControlName="dataOd" [(clrDate)]="dateFrom"
+                                    placeholder="Data od">
+                            </clr-date-container>
+                            <clr-date-container>
+                                <input type="date" formControlName="dataDo" [(clrDate)]="dateTo" placeholder="Data do">
+                            </clr-date-container>
+                            <div class="item">
+                                <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Pokaż
+                                    dane</button>
+                                <button class="btn btn-primary" [disabled]="!showExport" (click)="export()">Export do
+                                    Excela</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<clr-datagrid style="margin-top: 20px;">
+    <clr-dg-column [clrDgField]="'name'">Imię i nazwisko</clr-dg-column>
+    <clr-dg-column [clrDgField]="'date'">Data</clr-dg-column>
+    <clr-dg-column [clrDgField]="'installName'">Montaż</clr-dg-column>
+    <clr-dg-column [clrDgField]="'timeWork'">Czas pracy od-do (HH:mm)</clr-dg-column>
+    <clr-dg-column [clrDgField]="'timeTravel'">Czas dojazdu</clr-dg-column>
+    <clr-dg-column>Opis</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let prac of workerData"  [ngClass]="{'tableColor': prac.td > 8, 'tablePriorityNeed': prac.td < 0, 'workLong': prac.td > 24}">
+        <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="(prac?.desc.length>16)">
+            <clr-dg-row-detail *clrIfExpanded>
+                {{prac?.desc}}
+            </clr-dg-row-detail>
+        </ng-container>
+        <clr-dg-cell>{{prac?.name}}</clr-dg-cell>
+        <clr-dg-cell>{{prac?.date}}</clr-dg-cell>
+        <clr-dg-cell>{{prac?.installName}}</clr-dg-cell>
+        <clr-dg-cell>{{prac?.timeWork}} ({{prac?.timeDuration}})</clr-dg-cell>
+        <clr-dg-cell>{{prac?.timeTravel}}</clr-dg-cell>
+        <clr-dg-cell>{{ (prac?.desc.length>16) ? (prac?.desc | slice:0:16)+'...' : (prac?.desc) }}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        <div class="flexContainer">
+            <div class="legendRed"></div><span class="legendText">- brak czasu zakończenia pracy</span>
+            <div class="legendYellow"></div><span class="legendText">- praca pow. 8h</span>
+            <div class="legendBlue"></div><span class="legendText">- data roz. &#8800; data zako.</span>
+        </div>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} wpisów
+        </clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>

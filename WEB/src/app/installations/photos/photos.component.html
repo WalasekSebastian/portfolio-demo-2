@@ -1,0 +1,67 @@
+<div>
+    <h3 class="modal-title">Załączniki montażu: {{installName}}</h3>
+
+    <div class="container">
+        <div style="max-width: 400px; margin-right: 20px;">
+            <cds-file layout="horizontal">
+                <label>Wybierz plik</label>
+                <input #inputFile type="file" name="file" (change)="uploadFiles($event)"
+                    accept="image/*">
+            </cds-file>
+        </div>
+        <clr-input-container style="margin-top: 0px !important;">
+            <label>Opis</label>
+            <input clrInput name="name" [(ngModel)]="description" />
+        </clr-input-container>
+        <div *ngIf="loading" style="margin-left: 45px;">
+            <clr-spinner clrInline [clrMedium]="true">Ładowanie zdjęcia</clr-spinner>
+            <span>
+                Ładowanie zdjęcia
+            </span>
+        </div>
+
+        <button class="btn btn-primary" style="margin-left: 45px;" [disabled]="!valid"
+            *ngIf="!loading" (click)="submitPhoto()">Dodaj
+            zdjęcie</button>
+    </div>
+
+    <div class="container">
+        <div class="clr-row karta" *ngFor="let img of sortData">
+            <div class="clr-col">
+                <a class="card clickable">
+                    <div class="card-header">
+                        {{img.date | date:'dd-MM-yyyy'}}
+                    </div>
+                    <div class="card-img">
+                        <img [src]="img.src" alt="..." class="cover" (click)="openImage(img)" />
+                    </div>
+                    <div class="card-block">
+                        <p class="card-text">
+                            {{img.desc}}
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <clr-dropdown>
+                            <button class="btn btn-outline-primary" clrDropdownTrigger>
+                                Opcje
+                                <clr-icon shape="caret" direction="down"></clr-icon>
+                            </button>
+                            <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
+                                <div aria-label="Dropdown header Action 1" clrDropdownItem class="remove"
+                                    (click)="removeImage(img)">Usuń</div>
+                            </clr-dropdown-menu>
+                        </clr-dropdown>
+
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<clr-modal [(clrModalOpen)]="openModal" clrModalSize="xl">
+    <div class="modal-body">
+        <p>{{photo?.desc}}</p>
+        <img [src]="photo?.src" class="coverModal" />
+    </div>
+</clr-modal>

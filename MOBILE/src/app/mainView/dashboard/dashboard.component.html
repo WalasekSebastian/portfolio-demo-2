@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>DEMO System</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Informajcja o godzinach</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <p>{{currentMonth}}</p>
+      <p>{{lastMonth}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="checkAdmin()">
+    <ion-card-header>
+      <ion-card-subtitle>Informacja o zajętości dysków</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <div *ngFor="let disk of hddInfo">
+        <div>
+            <label>{{disk.name}}</label>
+            <ion-progress-bar [value]="disk.perNotAvaiable / 100"></ion-progress-bar>
+            <span>{{disk.perNotAvaiable}}% ({{disk.notAvaiable}}/{{disk.totalSpace}}GB)</span>
+        </div>
+    </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,142 @@
+<clr-modal [(clrModalOpen)]="basic" [clrModalSize]='sizeModal' [clrModalClosable]="false">
+    <h3 class="modal-title">Lista zapotrzebowania na: {{installName}}</h3>
+    <div class="modal-body">
+        <form clrForm *ngIf="checkPermissions()">
+            <clr-select-container>
+                <label>Status:</label>
+                <select clrSelect name="status" [(ngModel)]="status">
+                    <option value="1" *ngIf="statusBefore < 2">Nowy</option>
+                    <option value="2" *ngIf="statusBefore < 3">Realizowany</option>
+                    <option value="3" *ngIf="statusBefore < 4">Wydany</option>
+                    <option value="4" *ngIf="statusBefore < 5">Potwierdzony</option>
+                </select>
+            </clr-select-container>
+        </form>
+
+        <form clrForm [formGroup]="form" (ngSubmit)="submit()" *ngIf="statusBefore === 1">
+            <div class="container">
+                <clr-input-container class="inputFlex">
+                    <input clrInput #focus formControlName="name" placeholder="Nazwa" />
+                </clr-input-container>
+                <clr-input-container class="inputFlex">
+                    <input clrInput formControlName="qty" type='number' placeholder="Ilość" />
+                </clr-input-container>
+                <clr-select-container>
+                    <label>Jm:</label>
+                    <select clrSelect name="unit" formControlName="unit">
+                        <option *ngFor="let unit of dataUnits;" [value]="unit.shortName"> {{unit.shortName}}
+                        </option>
+                    </select>
+                </clr-select-container>
+                <div class="item">
+                    <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Dodaj</button>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <clr-datagrid>
+                <clr-dg-column *ngIf="(statusBefore === 3) || (statusBefore === 4)">Potwierdzony</clr-dg-column>
+                <clr-dg-column [clrDgField]="'name'">Nazwa</clr-dg-column>
+                <clr-dg-column [clrDgField]="'quantity'">Ilość</clr-dg-column>
+                <clr-dg-column [clrDgField]="'unitName'">jm</clr-dg-column>
+                <clr-dg-column [clrDgField]="'userName'">Kto dodał</clr-dg-column>
+                <clr-dg-column [clrDgField]="'dateAdd'">Data dodania</clr-dg-column>
+                <clr-dg-column [clrDgField]="'dateModify'">Data modyfikacji</clr-dg-column>
+
+                <clr-dg-row *clrDgItems="let item of dataItem"
+                    [ngClass]="(statusBefore === 3) || (statusBefore === 4)?item.confirm === 1?'confirmed':'notConfimed':''">
+                    <clr-dg-action-overflow *ngIf="(statusBefore === 1) || (statusBefore === 2)">
+                        <button class="action-item" (click)="changeOpen(item)" *ngIf="statusBefore === 1">Edytuj</button>
+                        <button class="action-item" (click)="divideQtyOpen(item)"
+                            *ngIf="statusBefore === 2">Podziel</button>
+                        <button class="action-item remove" (click)="remove(item.id)"
+                            *ngIf="statusBefore === 1">Usuń</button>
+                    </clr-dg-action-overflow>
+                    <clr-dg-cell *ngIf="(statusBefore === 3) || (statusBefore === 4)">
+                        <span *ngIf="item.confirm === 1">
+                            <clr-icon shape="check"></clr-icon>
+                        </span>
+                        <span *ngIf="item.confirm === 0">
+                            <clr-icon shape="times"></clr-icon>
+                        </span>
+                    </clr-dg-cell>
+                    <clr-dg-cell>{{item?.name}}</clr-dg-cell>
+                    <clr-dg-cell>{{item?.quantity}}</clr-dg-cell>
+                    <clr-dg-cell>{{item?.unitName}}</clr-dg-cell>
+                    <clr-dg-cell>{{item?.userName}}</clr-dg-cell>
+                    <clr-dg-cell>{{item?.dateAdd | date:'dd-MM-yyyy HH:mm' }}</clr-dg-cell>
+                    <clr-dg-cell>{{item?.dateModify | date:'dd-MM-yyyy HH:mm' }}</clr-dg-cell>
+                </clr-dg-row>
+
+                <clr-dg-footer>
+                    <div class="flexContainer" *ngIf="(statusBefore === 3) || (statusBefore === 4)">
+                        <div class="legendRed"></div><span class="legendText">- niepotwierdzony</span>
+                        <div class="legendDarkGreen"></div><span class="legendText">- potwierdzony</span>
+                    </div>
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                        <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}}
+                        materiałów
+                    </clr-dg-pagination>
+                </clr-dg-footer>
+            </clr-datagrid>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="update()"
+            *ngIf="status !== statusBefore">Aktualizuj</button>
+        <button type="button" class="btn btn-primary" (click)="close()">Zamknij</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openChengeModal" clrModalSize='sm' [clrModalClosable]="false">
+    <h3 class="modal-title">Edycja: {{changeItem?.name}}</h3>
+    <div class="modal-body">
+        <form clrForm [formGroup]="formChange" clrLayout="vertical">
+            <clr-input-container class="inputFlex">
+                <label>Nazwa:</label>
+                <input clrInput formControlName="name" placeholder="Nazwa" />
+            </clr-input-container>
+            <clr-input-container class="inputFlex">
+                <label>Ilość:</label>
+                <input clrInput formControlName="qty" type='number' placeholder="Ilość" />
+            </clr-input-container>
+            <clr-select-container>
+                <label>Jm:</label>
+                <select clrSelect name="unit" formControlName="unit">
+                    <option *ngFor="let unit of dataUnits;" [value]="unit.shortName"> {{unit.shortName}}
+                    </option>
+                </select>
+            </clr-select-container>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="openChengeModal = false">Anuluj</button>
+        <button type="button" class="btn btn-primary" [disabled]="!formChange.valid"
+            (click)="submitChange()">Zmień</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openDivideQtyModal" [clrModalClosable]="false">
+    <h3 class="modal-title">Podziel ilość: {{changeItem?.name}}</h3>
+    <div class="modal-body">
+        <p>Suma obu wartości musi być równa <b>{{changeItem?.quantity}}</b></p>
+        <form clrForm [formGroup]="formDivide" clrLayout="vertical">
+            <clr-input-container>
+                <label>Wartość edytowanego materiału:</label>
+                <input clrInput formControlName="qty" type='number' placeholder="Ilość" />
+            </clr-input-container>
+            <clr-input-container class="inputFlex">
+                <label>Wartość nowego materiału:</label>
+                <input clrInput formControlName="qtyNew" type='number' placeholder="Ilość" />
+                <clr-control-error *clrIfError="'mustMatch'">Suma się nie zgadza</clr-control-error>
+            </clr-input-container>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="openDivideQtyModal = false">Anuluj</button>
+        <button type="button" class="btn btn-primary" [disabled]="!formDivide.valid"
+            (click)="submitDivide()">Zmień</button>
+    </div>
+</clr-modal>

@@ -1,0 +1,108 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mv/orders"></ion-back-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title *ngIf="statusBefore === 1">Edytuj</ion-title>
+    <ion-title *ngIf="statusBefore === 2">Zobacz</ion-title>
+    <ion-title *ngIf="statusBefore === 3">Potwierdz</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>
+      {{orderName}}
+    </ion-label>
+  </ion-item>
+  <div *ngIf="checkPermissions()">
+    <ion-item>
+      <ion-label>Satus</ion-label>
+      <ion-select [compareWith]="compareWith" value="{{statusBefore}}" (ionChange)="statusChange($event)">
+        <ion-select-option value="1" >Nowy</ion-select-option>
+        <ion-select-option value="2" >Realizowany</ion-select-option>
+        <ion-select-option value="3" >Wydany</ion-select-option>
+        <ion-select-option value="4" >Potwierdzony</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div class="btn" *ngIf="status !== statusBefore">
+      <ion-button color="secondary" (click)="updateStatus()" [disabled]="!btnValid">Zaaktualizuj status</ion-button>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="(statusBefore === 1) && !isOpenChange">
+    <ion-item>
+      <ion-input placeholder="Nazwa" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Ilość" type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select placeholder="jm" interface="action-sheet" formControlName="unit">
+        <ion-select-option *ngFor="let unit of dataUnits;" [value]="unit.shortName">{{unit.shortName}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row class="btn">
+        <ion-col>
+          <ion-button type="submit" [disabled]="!form.valid">DODAJ</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <form [formGroup]="formChange" (ngSubmit)="submit()" *ngIf="(statusBefore === 1) && isOpenChange">
+    <ion-item>
+      <ion-label>
+        <ion-input placeholder="Nazwa" formControlName="name"></ion-input>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Ilość" type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        {{itemChange.unitName}}
+      </ion-label>
+    </ion-item>
+    <ion-grid>
+      <ion-row class="btn">
+        <ion-col>
+          <ion-button color="light" (click)="cancel()">Anuluj</ion-button>
+          <ion-button color="secondary" [disabled]="!formChange.valid" (click)="submitChange()">Zapisz zmianę</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <ion-grid>
+    <ion-row *ngFor="let item of dataList; let i = index">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-col [ngClass]="{'confirmed': item.confirm === 1}">
+            <div>{{item.name}}</div>
+          </ion-col>
+          <ion-col size="3" [ngClass]="{'confirmed': item.confirm === 1}">
+            <div>{{item.quantity}} {{item.unitName}}</div>
+          </ion-col>
+        </ion-item>
+        <ion-item-options side="end" *ngIf="statusBefore === 1 ">
+          <ion-item-option color="danger" (click)="remove(item.id)">Usuń</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="start" *ngIf="statusBefore === 1 ">
+          <ion-item-option color="secondary" (click)="changeOpen(item)">Edytuj</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="start" *ngIf="(statusBefore === 3) && (item.confirm === 0)">
+          <ion-item-option color="primary" (click)="confirm(item.id)">Potwierdź</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="end" *ngIf="(statusBefore === 3) && (item.confirm === 0)">
+          <ion-item-option color="secondary" (click)="moveToWarehouse(item.id)">Zwróć</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

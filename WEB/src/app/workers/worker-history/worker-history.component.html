@@ -1,0 +1,272 @@
+<div class="clr-row">
+    <div class="clr-col-4">
+        <div class="card" style=" min-height: 302px;">
+            <div class="card-block">
+                <div class="card-text">
+                    <form clrForm [formGroup]="form" (ngSubmit)="submit()">
+                        <div class="containerColumn">
+
+                            <clr-combobox-container>
+                                <clr-combobox name="myState" required formControlName="worker"
+                                    (clrOpenChange)="clear($event)">
+                                    <clr-options>
+                                        <clr-option *clrOptionItems="let user of users; field:'name'" [clrValue]="user">
+                                            {{user.name}}
+                                        </clr-option>
+                                    </clr-options>
+                                </clr-combobox>
+                                <clr-control-error>Wybierz pracownika</clr-control-error>
+                            </clr-combobox-container>
+
+
+                            <clr-date-container>
+                                <input type="date" formControlName="dataOd" [(clrDate)]="dateFrom"
+                                    placeholder="Data od">
+                            </clr-date-container>
+                            <clr-date-container>
+                                <input type="date" formControlName="dataDo" [(clrDate)]="dateTo" placeholder="Data do">
+                            </clr-date-container>
+                            <div class="item">
+                                <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Pokaż
+                                    dane</button>
+                                <button class="btn btn-primary" [disabled]="!showExport" (click)="export()">Export do
+                                    Excela</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clr-col-8" *ngIf="checkAdmin()">
+        <div class="card" style=" min-height: 302px;">
+            <div class="card-block">
+                <div class="card-text">
+                    <clr-tabs>
+                        <clr-tab>
+                            <button clrTabLink>Godziny</button>
+                            <clr-tab-content *clrIfActive>
+                                <br>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość godzin w dni pracujace w zadanym okresie:</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.stdHouers}} godzin {{summary?.stdMinutes}} minut</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość nadgodzin w dni pracujace w zadanym okresie:</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.overtimeStdHouers}} godzin {{summary?.overtimeStdMinutes}}
+                                            minut</span>
+                                    </div>
+                                </div>
+
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość godzin w dni wolne w zadanym okresie:</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.stdHouersHolidays}} godzin {{summary?.stdMinutesHolidays}}
+                                            minut</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość nadgodzin w dni wolne w zadanym okresie:</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.overtimeStdHouersHolidays}} godzin
+                                            {{summary?.overtimeStdMinutesHolidays}} minut</span>
+                                    </div>
+                                </div>
+
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość godzin w dni pracujace w zadanym okresie (montaż
+                                            alternatywny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.alterHouers}} godzin {{summary?.alterMinutes}} minut</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość nadgodzin w dni pracujace w zadanym okresie (montaż
+                                            alternatywny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.overtimeAlterHouers}} godzin {{summary?.overimeAlterMinutes}}
+                                            minut</span>
+                                    </div>
+                                </div>
+
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość godzin w dni wolne w zadanym okresie (montaż alternatywny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.alterHouersHolidays}} godzin {{summary?.alterMinutesHolidays}}
+                                            minut</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Ilość nadgodzin w dni wolne w zadanym okresie (montaż
+                                            alternatywny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span>{{summary?.overtimeAlterHouersHolidays}} godzin
+                                            {{summary?.overtimeAlterMinutesHolidays}} minut</span>
+                                    </div>
+                                </div>
+                            </clr-tab-content>
+                        </clr-tab>
+                        <clr-tab>
+                            <button clrTabLink>PLN</button>
+                            <clr-tab-content *clrIfActive="true">
+                                <br>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Suma PLN w dni pracujące (nadgodziny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span> {{summary?.sumStd}} ({{summary?.sumOvertimeStd}})</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Suma PLN w dni wolne (nadgodziny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span> {{summary?.sumStdHoliday}} ({{summary?.sumOvertimeStdHoliday}})</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Suma PLN w dni pracujące (montaż alternatywny) (nadgodziny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span> {{summary?.sumAlter}} ({{summary?.sumOvertimeAlter}})</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Suma PLN w dni wolne (montaż alternatywny) (nadgodziny):</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span> {{summary?.sumAlterHoliday}}
+                                            ({{summary?.sumOvertimeAlterHoliday}})</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Suma PLN za bonusy:</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span> {{summary?.sumBonus}}</span>
+                                    </div>
+                                </div>
+                                <div class="clr-row">
+                                    <div class="clr-col-8">
+                                        <span>Suma PLN:</span>
+                                    </div>
+                                    <div class="clr-col-4">
+                                        <span> {{summary?.sumAll}}</span>
+                                    </div>
+                                </div>
+                            </clr-tab-content>
+                        </clr-tab>
+                    </clr-tabs>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<clr-datagrid style="margin-top: 20px;">
+    <clr-dg-column [clrDgField]="'name'">Imię i nazwisko</clr-dg-column>
+    <clr-dg-column [clrDgField]="'date'">Data</clr-dg-column>
+    <clr-dg-column [clrDgField]="'installName'">Montaż</clr-dg-column>
+    <clr-dg-column [clrDgField]="'timeWork'">Czas pracy od-do (HH:mm)</clr-dg-column>
+    <clr-dg-column [clrDgField]="'timeTravel'">Czas dojazdu</clr-dg-column>
+    <clr-dg-column>Opis</clr-dg-column>
+    <clr-dg-column *ngIf="checkAdmin()">Bonus</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let prac of workerData"
+        [ngClass]="{'tableColor': prac.td > 8, 'tablePriorityNeed': prac.td < 0, 'workLong': prac.td > 24}">
+        <clr-dg-action-overflow *ngIf="checkAdmin()">
+            <button class="action-item" (click)="bonusOpen(prac)" >Bonus</button>
+            <button class="action-item" (click)="editWork(prac.id)">Zobacz</button>
+            <button class="action-item remove" (click)="removeWork(prac.id)">Usuń</button>
+        </clr-dg-action-overflow>
+        <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="(prac?.desc.length>16)">
+            <clr-dg-row-detail *clrIfExpanded>
+                {{prac?.desc}}
+            </clr-dg-row-detail>
+        </ng-container>
+        <clr-dg-cell>{{prac?.name}}</clr-dg-cell>
+        <clr-dg-cell>{{prac?.date}}</clr-dg-cell>
+        <clr-dg-cell>{{prac?.installName}}</clr-dg-cell>
+        <clr-dg-cell>{{prac?.timeWork}} ({{prac?.timeDuration}})</clr-dg-cell>
+        <clr-dg-cell>{{prac?.timeTravel}}</clr-dg-cell>
+
+        <clr-dg-cell>{{ (prac?.desc.length>16) ? (prac?.desc | slice:0:16)+'...' : (prac?.desc) }}</clr-dg-cell>
+        <clr-dg-cell *ngIf="checkAdmin()">
+            {{prac?.bonus}}
+            <clr-signpost *ngIf="prac?.bonDesc !== null">
+                <clr-signpost-content *clrIfOpen clrPosition="left-middle">
+                    <h4>Opis:</h4>
+                    <p>{{prac?.bonDesc}}</p>
+                </clr-signpost-content>
+            </clr-signpost>
+        </clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        <div class="flexContainer">
+            <div class="legendRed"></div><span class="legendText">- brak czasu zakończenia pracy</span>
+            <div class="legendYellow"></div><span class="legendText">- praca pow. 8h</span>
+            <div class="legendBlue"></div><span class="legendText">- data roz. &#8800; data zako.</span>
+        </div>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} wpisów
+        </clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openBonusModal" [clrModalClosable]="false">
+    <h3 class="modal-title">Edycja bonusu</h3>
+    <div class="modal-body">
+        <form clrForm [formGroup]="formBonus" clrLayout="vertical">
+            <clr-input-container class="inputFlex">
+                <label>Bonus:</label>
+                <input clrInput formControlName="bonus" type="number" placeholder="Bonus" />
+            </clr-input-container>
+            <clr-input-container class="inputFlex">
+                <label>Opis:</label>
+                <input clrInput formControlName="desc" placeholder="Opis" />
+            </clr-input-container>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" [disabled]="!formBonus.valid"
+            (click)="submitBonus()">DODAJ</button>
+        <button type="button" class="btn btn-warning" (click)="openBonusModal = false">Anuluj</button>
+    </div>
+</clr-modal>
+
+<div *ngIf="toogleEditWork">
+    <app-work-edit (newItemEvent)="editWorkClose($event)" [rejWorkId]="rejWorkId"></app-work-edit>
+</div>
+
+<div *ngIf="toogleRemoveWork">
+    <app-remove-work (newItemEvent)="removeWorkClose($event)" [rejWorkId]="rejWorkId"></app-remove-work>
+</div>

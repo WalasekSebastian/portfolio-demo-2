@@ -1,0 +1,118 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --clr-color-action-50: #8e97ab !important;
+  --clr-color-action-100: #e8eaee !important;
+  --clr-color-action-200: #d2d6de !important;
+  --clr-color-action-300: #bbc0cd !important;
+  --clr-color-action-400: #a5acbc !important;
+  --clr-color-action-500: #8e97ab !important;
+  --clr-color-action-600: #1d3058 !important;
+  --clr-color-action-700: #192a4d !important;
+  --clr-color-action-800: #152340 !important;
+  --clr-color-action-900: #111c33 !important;
+  --clr-color-action-1000: #1d3058 !important;
+}
+
+.tablePriorityNeed {
+  background-color: #eb4d3d;
+  color: white !important;
+}
+
+.tablePriorityNeed :hover {
+  background-color: #d44838;
+  color: white !important;
+}
+
+.tableColor {
+  background-color: #fcc200;
+}
+
+.tableColor :hover {
+  background-color: #e2ae02;
+}
+
+.tableSettled {
+  background-color: #dff0d0;
+}
+
+.tableSettled :hover {
+  background-color: #cbdabf;
+}
+
+.remove {
+  background-color: #eb4d3d !important;
+  color: white !important;
+}
+
+.confirmed {
+  background-color: rgb(98, 238, 98);
+}
+.confirmed :hover {
+  background-color: rgb(89, 212, 89);
+}
+
+.notConfimed {
+  background-color: #eb4d3d;
+  color: white;
+}
+
+.notConfimed :hover {
+  background-color: #cf4536;
+  color: white;
+}
+
+.workLong {
+  background-color: #3d66eb;
+  color: white;
+}
+
+.workLong :hover {
+  background-color: #385eda;
+  color: white;
+}
+
+.legendRed {
+  background-color: #eb4d3d;
+  width: 25px;
+  height: 15px;
+  margin-top: 10px;
+}
+.legendBlue{
+  background-color: #385eda;
+  width: 25px;
+  height: 15px;
+  margin-top: 10px;
+}
+
+.legendYellow {
+  background-color: #fcc200;
+  width: 25px;
+  height: 15px;
+  margin-top: 10px;
+}
+
+.legendGreen {
+  background-color: #dff0d0;
+  width: 25px;
+  height: 15px;
+  margin-top: 10px;
+}
+
+.legendDarkGreen {
+  background-color: rgb(98, 238, 98);
+  width: 25px;
+  height: 15px;
+  margin-top: 10px;
+}
+
+.legendText {
+  margin-top: 2px;
+  margin-left: 4px;
+  margin-right: 20px;
+}
+
+.flexContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

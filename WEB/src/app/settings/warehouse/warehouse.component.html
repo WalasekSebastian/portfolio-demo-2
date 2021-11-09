@@ -1,0 +1,14 @@
+<h3 class="modal-title">Obecny montaż jako magazyn do zwrotów: {{installName}}</h3>
+
+<form clrForm>
+    <clr-select-container>
+        <label>Montaż:</label>
+        <select clrSelect name="status" [(ngModel)]="install">
+            <option *ngFor="let install of dataInstalls;" [value]="install.id"> {{install.name}}
+            </option>
+        </select>
+    </clr-select-container>
+</form>
+
+<div><button type="button" class="btn btn-primary" (click)="changeWarehouse()" [disabled]="install === null">Zapisz</button></div>
+

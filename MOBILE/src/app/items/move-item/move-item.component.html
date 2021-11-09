@@ -1,0 +1,55 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Przenieś materiał</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Zamknij</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item >
+    <ion-label>Montaż docelowy</ion-label>
+    <ion-select interface="action-sheet" [(ngModel)]="install">
+      <ion-select-option *ngFor="let install of installations;" [value]="install.id">{{install.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+  <ion-item disabled="true">
+    <ion-label>Montaż źródłowy</ion-label>
+    <ion-select [placeholder]="item.installName" >
+      <ion-select-option>{{item.installName}}</ion-select-option>
+    </ion-select>
+  </ion-item>    
+  <ion-item disabled="true">
+    <ion-label>Nazwa</ion-label>
+    <ion-select [placeholder]="item.name" >
+      <ion-select-option>{{item.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item disabled="true">
+    <ion-label>Ilość</ion-label>
+    <ion-select [placeholder]="item.quantity" >
+      <ion-select-option>{{item.quantity}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Ilość nowa</ion-label>
+    <ion-input type="number" formControlName="qty"></ion-input>
+  </ion-item>
+  <ion-item disabled="true">    
+    <ion-label>jm</ion-label>
+    <ion-select [placeholder]="item.unitName" >
+      <ion-select-option ></ion-select-option>
+    </ion-select>
+  </ion-item>  
+  <ion-grid>
+    <ion-row class="btn">
+      <ion-col>
+        <ion-button type="submit" color="secondary" [disabled]="!form.valid || install==null">PRZENIEŚ</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </form>
+</ion-content>

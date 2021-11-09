@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.item {
+    margin: 20px;
+}
+
+.modal-body {
+    min-height: 150px;
+}
+
+.centered {
+    position: fixed;
+    top: 95vh;
+    left: 50%;
+    width: 400px;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }

@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+
+.karta{
+    margin-right: 20px;
+}
+
+.cover {
+  object-fit: cover;
+  width: 300px;
+  height: 200px;
+}
+
+.coverModal {
+  object-fit: cover;
+  max-height: 800px;
+}

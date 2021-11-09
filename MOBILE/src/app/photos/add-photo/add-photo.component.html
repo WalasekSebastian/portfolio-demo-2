@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Dodaj zdjęcie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-item>
+      <ion-label>Montaż</ion-label>
+      <ion-select interface="action-sheet" formControlName="install">
+        <ion-select-option *ngFor="let install of installations" [value]="install.id">{{install.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+  <ion-item>
+    <ion-textarea placeholder="Opis" size="150" formControlName="desc"></ion-textarea>
+  </ion-item>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <img class="center" [src]="url" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+    <input type="file" name="file" class="custom-file-input" (change)="uploadFiles($event)" formControlName="photo" accept="image/*">
+    <ion-grid>
+      <ion-row class="btn">
+        
+        <ion-col><ion-button color="secondary" type="submit" [disabled]="(!form.valid) || !valid"><ion-spinner name="bubbles" color="primary" *ngIf="loading"></ion-spinner>WYŚLIJ</ion-button></ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

@@ -1,0 +1,149 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Historia pracy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-toolbar>
+  <ion-segment value="all" [(ngModel)]="type">
+    <ion-segment-button value="all">Historia</ion-segment-button>
+    <ion-segment-button value="date">Zakres dat</ion-segment-button>
+    <ion-segment-button value="summary">Podsumowanie</ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+
+<ion-content [ngSwitch]="type">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngSwitchCase="'all'">
+    <ion-item *ngFor="let history of userWorkHistory" (click)="editBtn(history.id)">
+      <ion-grid>
+        <ion-row [ngClass]="{'workLong': history.td > 24}">
+          <ion-col class="ion-align-self-start" size="5">
+            <div>{{history?.name}}</div>
+            <div>{{history?.date | date:'dd-MM-yyyy'}} ({{getDayName(history?.date)}})</div>
+          </ion-col>
+          <ion-col class="ion-align-self-center border">
+            <div class="center">{{history?.timeStart}} - {{history?.timeEnd}}</div>
+          </ion-col>
+          <ion-col class="ion-align-self-center" size="2">
+            <div class="end">{{history?.timeDuration}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <div *ngSwitchCase="'date'">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <ion-item>
+        <ion-label>Data rozpoczęcia</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" formControlName="dateStart"
+          monthNames="Styczeń, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Paździerenik, Listopad, Grudzień"
+          monthShortNames="Sty, Lut, Mar, Kwi, Maj, Cze, Lip, Sie, Wrz, Paź, Lis, Gru" cancelText="Anuluj"
+          doneText="Wybierz"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Data zakończenia</ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" formControlName="dateEnd" [min]="this.form.get('dateStart').value"
+          monthNames="Styczeń, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Paździerenik, Listopad, Grudzień"
+          monthShortNames="Sty, Lut, Mar, Kwi, Maj, Cze, Lip, Sie, Wrz, Paź, Lis, Gru" cancelText="Anuluj"
+          doneText="Wybierz"></ion-datetime>
+      </ion-item>
+      <ion-grid>
+        <ion-row class="btn">
+          <ion-col>
+            <ion-button color="secondary" type="submit" [disabled]="!form.valid">WYŚLIJ</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+
+    <ion-list>
+      <ion-item *ngFor="let history of userWorkData" (click)="editBtn(history.id)">
+        <ion-grid>
+          <ion-row [ngClass]="{'workLong': history.td > 24}">
+            <ion-col class="ion-align-self-start" size="5">
+              <div>{{history?.name}}</div>
+              <div>{{history?.date | date:'dd-MM-yyyy'}} ({{getDayName(history?.date)}})</div>
+            </ion-col>
+            <ion-col class="ion-align-self-center border">
+              <div class="center">{{history?.timeStart}} - {{history?.timeEnd}}</div>
+            </ion-col>
+            <ion-col class="ion-align-self-center" size="2">
+              <div class="end">{{history?.timeDuration}}</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngSwitchCase="'summary'">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>Informajcja o godzinach</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+            <span>Ilość godzin w dni pracujace w zadanym okresie:</span><br>
+            <span>{{summary?.stdHouers}} godzin {{summary?.stdMinutes}} minut</span><br><br>
+
+            <span>Ilość nadgodzin w dni pracujace w zadanym okresie:</span><br>
+            <span>{{summary?.overtimeStdHouers}} godzin {{summary?.overtimeStdMinutes}} minut</span><br><br>
+
+            <span>Ilość godzin w dni wolne w zadanym okresie:</span><br>
+            <span>{{summary?.stdHouersHolidays}} godzin {{summary?.stdMinutesHolidays}} minut</span><br><br>
+
+            <span>Ilość nadgodzin w dni wolne w zadanym okresie:</span><br>
+            <span>{{summary?.overtimeStdHouersHolidays}} godzin {{summary?.overtimeStdMinutesHolidays}} minut</span><br><br>
+
+            <span>Ilość godzin w dni pracujace w zadanym okresie (montaż alternatywny):</span><br>
+            <span>{{summary?.alterHouers}} godzin {{summary?.alterMinutes}} minut</span><br><br>
+
+            <span>Ilość nadgodzin w dni pracujace w zadanym okresie (montaż alternatywny):</span><br>
+            <span>{{summary?.overtimeAlterHouers}} godzin {{summary?.overimeAlterMinutes}} minut</span><br><br>
+
+            <span>Ilość godzin w dni wolne w zadanym okresie (montaż alternatywny):</span><br>
+            <span>{{summary?.alterHouersHolidays}} godzin {{summary?.alterMinutesHolidays}} minut</span><br><br>
+
+            <span>Ilość nadgodzin w dni wolne w zadanym okresie (montaż alternatywny):</span><br>
+            <span>{{summary?.overtimeAlterHouersHolidays}} godzin {{summary?.overtimeAlterMinutesHolidays}} minut</span>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>Wynagrodzenie</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+              <span>Suma PLN w dni pracujące (nadgodziny):</span><br>
+              <span> {{summary?.sumStd}} ({{summary?.sumOvertimeStd}})</span><br><br>
+
+              <span>Suma PLN w dni wolne (nadgodziny):</span><br>
+              <span> {{summary?.sumStdHoliday}} ({{summary?.sumOvertimeStdHoliday}})</span><br><br>
+
+              <span>Suma PLN w dni pracujące (montaż alternatywny) (nadgodziny):</span><br>
+              <span> {{summary?.sumAlter}} ({{summary?.sumOvertimeAlter}})</span><br><br>
+
+              <span>Suma PLN w dni wolne (montaż alternatywny) (nadgodziny):</span><br>
+              <span> {{summary?.sumAlterHoliday}} ({{summary?.sumOvertimeAlterHoliday}})</span><br><br>
+
+              <span>Suma PLN za bonusy:</span><br>
+              <span> {{summary?.sumBonus}}</span><br><br>
+
+              <span>Suma PLN:</span><br>
+              <span> {{summary?.sumAll}}</span>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</ion-content>

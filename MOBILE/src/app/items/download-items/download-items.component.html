@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Pobierz materiał</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-select placeholder="Montaż" interface="action-sheet" [(ngModel)]="install">
+      <ion-select-option *ngFor="let install of dataInstalls;" [value]="install.id">{{install.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-item>
+      <ion-input placeholder="Nazwa" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Ilość" type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select placeholder="jm" interface="action-sheet" formControlName="unit">
+        <ion-select-option *ngFor="let unit of dataUnits;" [value]="unit.shortName">{{unit.shortName}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row class="btn">
+        <ion-col>
+          <ion-button type="submit" color="secondary" [disabled]="!form.valid || install==null" >POBIERZ</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

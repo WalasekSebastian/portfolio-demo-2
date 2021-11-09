@@ -1,0 +1,33 @@
+<div class="login-wrapper">
+    <form class="login" [formGroup]="form" (submit)="loginUser()">
+      <section class="title">
+        <h3 class="welcome">Witaj w</h3>
+        DEMO System 
+        <h5>v{{currentApplicationVersion}}</h5>
+        <h5 class="hint">Użyj danych do zalogowania</h5>
+      </section>
+      <div class="login-group">
+        <clr-input-container>
+          <label class="clr-sr-only">Login</label>
+          <input type="text" name="username" clrInput #focus placeholder="Login" formControlName="login"/>
+          <clr-control-error *clrIfError="'required'">Podaj login</clr-control-error>
+        </clr-input-container>
+        <clr-password-container>
+          <label class="clr-sr-only">Hasło</label>
+          <input type="password" name="password" clrPassword placeholder="Hasło" formControlName="password"/>
+          <clr-control-error *clrIfError="'required'">Podaj hasło</clr-control-error>
+        </clr-password-container>
+        <!-- <clr-checkbox-wrapper>
+          <label>Zapamiętaj mnie</label>
+          <input type="checkbox" name="rememberMe" clrCheckbox />
+        </clr-checkbox-wrapper> -->
+        <div class="error active" *ngIf="isBad">
+          Błędny login lub hasło
+        </div>
+        <button *ngIf="!isWorking" type="submit" class="btn btn-primary" [disabled]="!form.valid">ZALOGUJ</button>
+        <div class="cent">
+          <clr-spinner *ngIf="isWorking" [clrMedium]="true"></clr-spinner>
+        </div>
+      </div>
+    </form>
+  </div>

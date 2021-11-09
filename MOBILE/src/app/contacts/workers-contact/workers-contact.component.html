@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Kontakty</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar placeholder="Szukaj..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let data of contactsData | filter:filterTerm">
+      <ion-label>{{data.name}}</ion-label>
+      <ion-label><a href="tel:{{data.phone}}">{{data.phone}}</a></ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

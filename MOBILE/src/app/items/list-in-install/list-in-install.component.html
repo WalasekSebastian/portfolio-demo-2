@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mv/inInstall"></ion-back-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title >{{installName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar placeholder="Szukaj..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+
+  <ion-grid>
+    <ion-row *ngFor="let item of dataItems | filter:filterTerm">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-col>
+            <div>{{item.name}}</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>{{item.quantity}} {{item.unitName}}</div>
+          </ion-col>
+        </ion-item>
+        <ion-item-options side="end" >
+          <ion-item-option color="secondary" (click)="showMove(item)">Przenieś</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="start" >
+          <ion-item-option color="primary" (click)="showDownload(item)">Pobierz</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-row>
+  </ion-grid>
+</ion-content>

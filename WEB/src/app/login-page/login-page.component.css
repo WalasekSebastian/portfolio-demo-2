@@ -1,0 +1,31 @@
+.isBad{
+    color: red;
+    text-transform: uppercase;
+  }
+  
+  .card {
+    max-width: 250px;
+  }
+  
+  .main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .cent{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .icon {
+    text-align: center;
+  }
+
+  .login-wrapper {
+    background: url(/assets/logo.png) 60% center no-repeat;;
+  }
+  

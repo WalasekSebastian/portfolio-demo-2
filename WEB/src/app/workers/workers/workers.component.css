@@ -1,0 +1,32 @@
+.centered {
+    position: fixed;
+    top: 95vh;
+    left: 50%;
+    width: 400px;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.containerColumn {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-content: flex-start;
+  align-items: center;
+}
+
+.item {
+  margin-top: 20px;
+}
+
+.main-container {
+  height: calc(100vh - 96px);
+}

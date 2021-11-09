@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true">
+
+  <ion-img class="logo" src="assets/logo.png"></ion-img>
+
+  <ion-card class="loginCard">
+    <form [formGroup]="form" (submit)="loginUser()">
+      <ion-card-content>
+        <ion-item>
+          <ion-input placeholder="Login" formControlName="login"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="password" placeholder="Hasło" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-grid>
+          <!-- <ion-row class="center">
+            <ion-col>
+              <ion-checkbox></ion-checkbox>
+              <ion-label class="labSave">Zapamiętaj mnie</ion-label>
+            </ion-col>
+          </ion-row> -->
+          <ion-row class="btnZaloguj">
+            <ion-col>
+              <ion-button type="submit" [disabled]="!form.valid">Zaloguj</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </form>
+  </ion-card>
+</ion-content>

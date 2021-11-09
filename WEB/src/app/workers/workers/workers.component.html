@@ -1,0 +1,33 @@
+<nav class="subnav">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="./history" routerLinkActive="active">Historia pracownika</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="cursor: pointer;" (click)="addWorker()" *ngIf="checkAdmin()">Dodaj pracownika</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="./list" routerLinkActive="active">Lista pracowników</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="cursor: pointer;" (click)="addWork()" *ngIf="checkAdmin()">Dodaj pracę</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div *ngIf="toogle">
+    <app-worker-add (newItemEvent)="addWorkerClose($event)"></app-worker-add>
+  </div> 
+  
+  <div *ngIf="toogleAddWork">
+    <app-work-add (newItemEvent)="workAddClose($event)"></app-work-add>
+  </div>
+
+  <div class="main-container">
+    <div class="content-container">
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  

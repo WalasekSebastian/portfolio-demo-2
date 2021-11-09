@@ -1,0 +1,59 @@
+<div>
+    <clr-toggle-container>
+        <clr-toggle-wrapper>
+          <input type="checkbox" clrToggle name="options" value="option1" [(ngModel)]="active" (change)="showDeaciveded()"/>
+          <label>Pokaż nieaktywne</label>
+        </clr-toggle-wrapper>
+      </clr-toggle-container>
+
+    <clr-datagrid id="my-datagrid">
+        <clr-dg-column [clrDgField]="'firstName'">Imię</clr-dg-column>
+        <clr-dg-column [clrDgField]="'lastName'">Nazwisko</clr-dg-column>
+        <clr-dg-column [clrDgField]="'login'">Login</clr-dg-column>
+        <clr-dg-column [clrDgField]="'phone'">Telefon</clr-dg-column>
+        <clr-dg-column [clrDgField]="'email'">E-mail</clr-dg-column>
+        <clr-dg-column [clrDgField]="'active'">Aktywny</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of usersData" [ngClass]="{'notConfimed': user.active === 0}">
+            <clr-dg-action-overflow *ngIf="checkPermissions()">
+                <button class="action-item" (click)="editWorker(user.id)">Edytuj</button>
+                <button class="action-item" (click)="passwordReset(user.id)">Zmień hasło</button>
+                <button class="action-item" *ngIf="user.active === 0" (click)="activateUser(user.id)">Aktywuj</button>
+                <button class="action-item" *ngIf="user.active === 1"
+                    (click)="deactivateUser(user.id)">Dezaktywuj</button>
+            </clr-dg-action-overflow>
+            <clr-dg-cell>{{user?.firstName}}</clr-dg-cell>
+            <clr-dg-cell>{{user?.lastName}}</clr-dg-cell>
+            <clr-dg-cell>{{user?.login}}</clr-dg-cell>
+            <clr-dg-cell>{{user?.phone}}</clr-dg-cell>
+            <clr-dg-cell>{{user?.email}}</clr-dg-cell>
+            <clr-dg-cell>
+                <span *ngIf="user.active === 1">
+                    <clr-icon shape="check"></clr-icon>
+                </span>
+                <span *ngIf="user.active === 0">
+                    <clr-icon shape="times"></clr-icon>
+                </span>
+            </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+            <div class="flexContainer" *ngIf="active">
+                <div class="legendRed"></div><span class="legendText">- pracownik nieaktywny</span>
+            </div>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} użytkowników
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+</div>
+
+<div *ngIf="toogle">
+    <app-worker-edit (newItemEvent)="editWorkerClose($event)" [userId]="userId"></app-worker-edit>
+</div>
+
+<div *ngIf="tooglePW">
+    <app-workers-password-reset (newItemEvent)="passwordResetClose($event)" [userId]="userId">
+    </app-workers-password-reset>
+</div>

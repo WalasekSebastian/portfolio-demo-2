@@ -1,0 +1,39 @@
+<div>
+    <h3 class="modal-title">Wykaz wszystkich prac: {{installName}}</h3>
+    <button class="btn btn-primary" (click)="export()">Export to excel</button>
+
+    <clr-datagrid >
+        <clr-dg-column [clrDgField]="'name'">Imię i nazwisko</clr-dg-column>
+        <clr-dg-column [clrDgField]="'date'">Data</clr-dg-column>
+        <clr-dg-column [clrDgField]="'installName'">Montaż</clr-dg-column>
+        <clr-dg-column [clrDgField]="'timeWork'">Czas pracy od-do (HH:mm)</clr-dg-column>
+        <clr-dg-column [clrDgField]="'timeTravel'">Czas dojazdu</clr-dg-column>
+        <clr-dg-column >Opis</clr-dg-column>
+    
+        <clr-dg-row *clrDgItems="let prac of installWorkData"  [ngClass]="{'tableColor': prac.td > 8, 'tablePriorityNeed': prac.td < 0, 'workLong': prac.td > 24}">
+            <clr-dg-cell>{{prac?.name}}</clr-dg-cell>
+            <clr-dg-cell>{{prac?.date}}</clr-dg-cell>
+            <clr-dg-cell>{{prac?.installName}}</clr-dg-cell>
+            <clr-dg-cell>{{prac?.timeWork}} ({{prac?.timeDuration}})</clr-dg-cell>
+            <clr-dg-cell>{{prac?.timeTravel}}</clr-dg-cell>
+            <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="(prac?.desc.length>16)">
+            <clr-dg-row-detail *clrIfExpanded >
+                {{prac?.desc}}
+            </clr-dg-row-detail>
+            </ng-container>
+            <clr-dg-cell>{{ (prac?.desc.length>16) ? (prac?.desc | slice:0:16)+'...' : (prac?.desc) }}</clr-dg-cell>
+        </clr-dg-row>
+    
+        <clr-dg-footer>
+            <div class="flexContainer">
+                <div class="legendRed"></div><span class="legendText">- brak czasu zakończenia pracy</span>
+                <div class="legendYellow"></div><span class="legendText">- praca pow. 8h</span>
+                <div class="legendBlue"></div><span class="legendText">- data roz. &#8800; data zako.</span>
+            </div>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} wpisów
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+</div>

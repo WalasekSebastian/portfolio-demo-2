@@ -1,0 +1,74 @@
+<div>
+    <clr-toggle-container>
+        <clr-toggle-wrapper>
+          <input type="checkbox" clrToggle name="options" value="option1" [(ngModel)]="active" (change)="showDeaciveded()"/>
+          <label>Pokaż nieaktywne</label>
+        </clr-toggle-wrapper>
+      </clr-toggle-container>
+
+    <clr-datagrid id="my-datagrid">
+        <clr-dg-column [clrDgField]="'name'">Skrócona nazwa</clr-dg-column>
+        <clr-dg-column [clrDgField]="'firstName'">Imię</clr-dg-column>
+        <clr-dg-column [clrDgField]="'lastName'">Nazwisko</clr-dg-column>
+        <clr-dg-column [clrDgField]="'street'">Ulica</clr-dg-column>
+        <clr-dg-column [clrDgField]="'number'">Numer domu</clr-dg-column>
+        <clr-dg-column [clrDgField]="'postalCode'">Kod pocztowy</clr-dg-column>
+        <clr-dg-column [clrDgField]="'city'">Miasto</clr-dg-column>
+        <clr-dg-column [clrDgField]="'active'">Aktywny</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let install of installsData" [ngClass]="{'notConfimed': install.active === 0}">
+            <clr-dg-action-overflow>
+                <button class="action-item" (click)="photos(install.id)">Załączniki</button>
+                <button class="action-item" (click)="editInstall(install.id)" *ngIf="checkPermissions()">Edytuj</button>
+                <button class="action-item" (click)="itemsInstall(install.id)">Lista rzeczy na budowie</button>
+                <button class="action-item" (click)="itemsDownloaded(install.id)">Lista użytych rzeczy</button>
+                <button class="action-item" (click)="workHistory(install.id)" *ngIf="checkPermissions()">Wykaz prac</button>
+                <button class="action-item" *ngIf="install.active === 0 && checkPermissions()" (click)="activateInstall(install.id)" >Aktywuj</button>
+                <button class="action-item" *ngIf="install.active === 1 && checkPermissions()" (click)="deactivateInstall(install.id)">Dezaktywuj</button>
+            </clr-dg-action-overflow>
+            <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="install?.contacts.length > 0">
+                <clr-dg-row-detail *clrIfExpanded >
+
+                    <clr-datagrid>                      
+                
+                        <clr-dg-row *clrDgItems="let contact of install?.contacts" >
+                            <clr-dg-cell>{{contact?.name}}</clr-dg-cell>                                
+                            <clr-dg-cell>{{contact?.phone}}</clr-dg-cell>
+                            <clr-dg-cell>{{contact?.email}}</clr-dg-cell>
+                        </clr-dg-row>
+                    </clr-datagrid>
+
+                </clr-dg-row-detail>
+                </ng-container>
+            <clr-dg-cell>{{install?.name}}</clr-dg-cell>
+            <clr-dg-cell>{{install?.firstName}}</clr-dg-cell>
+            <clr-dg-cell>{{install?.lastName}}</clr-dg-cell>
+            <clr-dg-cell>{{install?.street}}</clr-dg-cell>
+            <clr-dg-cell>{{install?.number}}</clr-dg-cell>
+            <clr-dg-cell>{{install?.postalCode}}</clr-dg-cell>
+            <clr-dg-cell>{{install?.city}}</clr-dg-cell>
+            <clr-dg-cell>
+                <span *ngIf="install?.active === 1">
+                    <clr-icon shape="check"></clr-icon>
+                </span>
+                <span *ngIf="install?.active === 0">
+                    <clr-icon shape="times"></clr-icon>
+                </span>
+            </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+            <div class="flexContainer" *ngIf="active">
+                <div class="legendRed"></div><span class="legendText">- montaż nieaktywny</span>
+            </div>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} montaży
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+</div>
+
+<div *ngIf="toogle">
+    <app-installation-edit (newItemEvent)="editInstallClose($event)" [installId]="installId"></app-installation-edit>
+  </div>

@@ -1,0 +1,141 @@
+<clr-modal [(clrModalOpen)]="basic" [clrModalSize]='sizeModal' [clrModalClosable]="false">
+    <h3 class="modal-title">Dodaj nowy montaż</h3>
+    <div class="modal-body">
+        <form clrStepper [formGroup]="form" (ngSubmit)="submit()">
+            <clr-stepper-panel formGroupName="name">
+                <clr-step-title>Dane właścicela</clr-step-title>
+                <clr-step-content *clrIfExpanded>
+                    <clr-input-container>
+                        <label>Skrócona nazwa</label>
+                        <input clrInput formControlName="name" />
+                        <clr-control-error *clrIfError="'required'">Nazwa jest wymagana</clr-control-error>
+                    </clr-input-container>
+
+                    <clr-input-container>
+                        <label>Imię</label>
+                        <input clrInput formControlName="firstName" />
+                        <clr-control-error *clrIfError="'required'">Imię jest wymagane</clr-control-error>
+                    </clr-input-container>
+
+                    <clr-input-container>
+                        <label>Nazwisko</label>
+                        <input clrInput formControlName="lastName" />
+                        <clr-control-error *clrIfError="'required'">Nazwisko jest wymagane</clr-control-error>
+                    </clr-input-container>
+
+                
+                    <button clrStepButton="next">dalej</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+
+            <clr-stepper-panel formGroupName="contact">
+                <clr-step-title>Dane kontaktowe</clr-step-title>
+                <clr-step-content *clrIfExpanded>
+
+                    <div class="container">
+                        <form clrForm [formGroup]="formContact" (ngSubmit)="submitContact()" clrLayout="horizontal">
+                            <clr-input-container class="inputFlex">
+                                <label>Nazwa:</label>
+                                <input clrInput formControlName="name" />
+                                <clr-control-error *clrIfError="'required'">nazwa jest wymagana</clr-control-error>
+                            </clr-input-container>
+                            <clr-input-container class="inputFlex">
+                                <label>Telefon:</label>
+                                <input clrInput formControlName="phone" />
+                            </clr-input-container>
+                            <clr-input-container class="inputFlex">
+                                <label>E-mail:</label>
+                                <input clrInput formControlName="email" />
+                            </clr-input-container>
+                            <div class="item">
+                                <button class="btn btn-primary" type="submit" [disabled]="!formContact.valid">Dodaj kontakt</button>
+                            </div>
+                        </form>
+
+                        <clr-datagrid>
+                            <clr-dg-column [clrDgField]="'name'">Nazwa</clr-dg-column>
+                            <clr-dg-column [clrDgField]="'phone'">Telefon</clr-dg-column>
+                            <clr-dg-column [clrDgField]="'email'">E-mail</clr-dg-column>
+                            
+                    
+                            <clr-dg-row *clrDgItems="let contact of dataContacts; let i = index" >
+                                <clr-dg-action-overflow>
+                                    <button class="action-item" (click)="changeOpen(contact)">Edytuj</button>
+                                    <button class="action-item remove" (click)="dataContacts.splice(i, 1)">Usuń</button>
+                                </clr-dg-action-overflow>
+                                <clr-dg-cell>{{contact?.name}}</clr-dg-cell>                                
+                                <clr-dg-cell>{{contact?.phone}}</clr-dg-cell>
+                                <clr-dg-cell>{{contact?.email}}</clr-dg-cell>
+                            </clr-dg-row>
+                    
+                            <clr-dg-footer>
+                                <clr-dg-pagination #paginationC [clrDgPageSize]="5">
+                                    <clr-dg-page-size [clrPageSizeOptions]="[5,10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                                    {{paginationC.firstItem + 1}} - {{paginationC.lastItem + 1}} z {{paginationC.totalItems}} kontaktów
+                                </clr-dg-pagination>
+                            </clr-dg-footer>
+                        </clr-datagrid>
+                    </div>
+
+                    <button clrStepButton="next">dalej</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+
+            <clr-stepper-panel formGroupName="adress">
+                <clr-step-title>Adres</clr-step-title>
+                <clr-step-content *clrIfExpanded>
+                    <clr-input-container>
+                        <label>Ulica</label>
+                        <input clrInput formControlName="street" />
+                        <clr-control-error *clrIfError="'required'">Hasło jest wymagane</clr-control-error>
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Numer domu</label>
+                        <input clrInput formControlName="number" />
+                        <clr-control-error *clrIfError="'required'">Błedne hasło</clr-control-error>
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Kod pocztowy</label>
+                        <input clrInput formControlName="postalCode" />
+                        <clr-control-error *clrIfError="'required'">Błedne hasło</clr-control-error>
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Miasto</label>
+                        <input clrInput formControlName="city" />
+                        <clr-control-error *clrIfError="'required'">Błedne hasło</clr-control-error>
+                    </clr-input-container>
+                    <button clrStepButton="submit">ZAPISZ</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" (click)="close()">Anuluj</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="openChengeModal" clrModalSize='sm' [clrModalClosable]="false">
+    <h3 class="modal-title">Edycja: {{changeContact?.name}}</h3>
+    <div class="modal-body">
+        <form clrForm [formGroup]="formChangeContact" clrLayout="vertical">
+            <clr-input-container class="inputFlex">
+                <label>Nazwa:</label>
+                <input clrInput formControlName="name" />
+                <clr-control-error *clrIfError="'required'">nazwa jest wymagana</clr-control-error>
+            </clr-input-container>
+            <clr-input-container class="inputFlex">
+                <label>Telefon:</label>
+                <input clrInput formControlName="phone" />
+            </clr-input-container>
+            <clr-input-container class="inputFlex">
+                <label>E-mail:</label>
+                <input clrInput formControlName="email" />
+            </clr-input-container>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="openChengeModal = false">Anuluj</button>
+        <button type="button" class="btn btn-primary" [disabled]="!formChangeContact.valid"
+            (click)="submitChange()">Zmień</button>
+    </div>
+</clr-modal>

@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mv/WorkHistory"></ion-back-button>
+    </ion-buttons>
+    <ion-img style="max-width: 10%; margin-left: 40px;" src="assets/icon/favicon.png"></ion-img>
+    <ion-title>Edycja pracy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+  <ion-item>
+    <ion-label>Montaż</ion-label>
+    <ion-select interface="action-sheet" formControlName="install" [value]="editWork.installationId"> 
+      <ion-select-option *ngFor="let install of installations" [value]="install.id">{{install.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Data rozpoczęcia</ion-label>
+    <ion-datetime displayFormat="DD-MM-YYYY HH:mm" formControlName="dateStart"
+    minuteValues="0,15,30,45"
+      monthNames="Styczeń, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Paździerenik, Listopad, Grudzień"
+      monthShortNames="Sty, Lut, Mar, Kwi, Maj, Cze, Lip, Sie, Wrz, Paź, Lis, Gru" cancelText="Anuluj" doneText="Wybierz"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Data zakończenia</ion-label>
+    <ion-datetime displayFormat="DD-MM-YYYY HH:mm" formControlName="dateEnd" 
+      [min]="this.form.get('dateStart').value"
+      minuteValues="0,15,30,45"
+      monthNames="Styczeń, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Paździerenik, Listopad, Grudzień"
+      monthShortNames="Sty, Lut, Mar, Kwi, Maj, Cze, Lip, Sie, Wrz, Paź, Lis, Gru" cancelText="Anuluj" doneText="Wybierz"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Czas przejazdu</ion-label>
+    <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" formControlName="timetravel" cancelText="Anuluj" doneText="Wybierz"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-textarea placeholder="Opis" size="150" formControlName="desc"></ion-textarea>
+  </ion-item>
+
+  <ion-grid>
+    <ion-row class="btn">
+      <ion-col><ion-button color="secondary" type="submit" [disabled]="!form.valid">ZAKTUALIZUJ</ion-button></ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
+</ion-content>

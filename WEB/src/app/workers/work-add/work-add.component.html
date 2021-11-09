@@ -1,0 +1,62 @@
+<clr-modal [(clrModalOpen)]="basic" [clrModalSize]='sizeModal' [clrModalClosable]="false" >
+    <h3 class="modal-title">Dodaj pracę</h3>
+    <div class="modal-body">
+        <form clrForm [formGroup]="form" clrLayout="vertical">
+
+            <clr-combobox-container>
+                <label>Wybierz pracownika</label>
+                <clr-combobox name="myState" required formControlName="worker" (clrOpenChange)="clearWorker($event)">
+                    <clr-options>
+                        <clr-option *clrOptionItems="let user of users; field:'name'" [clrValue]="user">
+                            {{user.name}}
+                        </clr-option>
+                    </clr-options>
+                </clr-combobox>
+                <clr-control-error>Wybierz pracownika</clr-control-error>
+            </clr-combobox-container>
+
+            <clr-combobox-container >
+                <label>Wybierz montaż</label>
+                <clr-combobox name="myState" required formControlName="install" (clrOpenChange)="clearInstall($event)">
+                    <clr-options>
+                        <clr-option *clrOptionItems="let install of installs; field:'name'" [clrValue]="install">
+                            {{install.name}}
+                        </clr-option>
+                    </clr-options>
+                </clr-combobox>
+                <clr-control-error>Wybierz montaż</clr-control-error>
+            </clr-combobox-container>
+
+
+            <clr-date-container>
+                <label>Data rozpoczęcia</label>
+                <input type="date" formControlName="dateStart" [(clrDate)]="dateFrom" placeholder="Data od">
+            </clr-date-container><br>
+            <cds-time control-width="shrink">
+                <label>Czas rozpoczęcia</label>
+                <input type="time" value="07:00" formControlName="timeStart"/>
+            </cds-time> 
+            <clr-date-container>
+                <label>Data zakończenia</label>
+                <input type="date" formControlName="dateEnd" [(clrDate)]="dateTo" placeholder="Data do">
+            </clr-date-container><br>
+            <cds-time control-width="shrink">
+                <label>Czas zakończenia</label>
+                <input type="time" value="15:00" formControlName="timeEnd"/>
+            </cds-time><br>
+            <cds-time control-width="shrink">
+                <label style="min-width: 111px;">Czas podróży</label>
+                <input type="time" value="00:00" formControlName="timeTravel"/>
+            </cds-time>
+            <clr-textarea-container>
+                <label>Opis</label>
+                <textarea style="width: 400px;" clrTextarea formControlName="desc" name="description"></textarea>
+            </clr-textarea-container>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" [disabled]="!form.valid" (click)="submit()">Dodaj</button>
+        <button type="button" class="btn btn-warning" (click)="close()">Anuluj</button>
+    </div>
+</clr-modal>

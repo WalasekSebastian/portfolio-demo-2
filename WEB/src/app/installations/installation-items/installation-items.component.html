@@ -1,0 +1,28 @@
+<div>
+    <h3 class="modal-title">Lista materiałów na: {{installName}}</h3>
+    <button class="btn btn-primary" (click)="export()">Export do excel</button>
+    <clr-datagrid>
+        <clr-dg-column [clrDgField]="'name'">Nazwa</clr-dg-column>
+        <clr-dg-column [clrDgField]="'quantity'">Ilość</clr-dg-column>
+        <clr-dg-column [clrDgField]="'unitName'">Jm.</clr-dg-column>
+        <clr-dg-column [clrDgField]="'userName'">Kto dodał</clr-dg-column>
+        <clr-dg-column [clrDgField]="'dateAdd'">Data dodania</clr-dg-column>
+        <clr-dg-column [clrDgField]="'dateModify'">Data ost. modyfikajci</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let items of dataItems">
+            <clr-dg-cell>{{items?.name}}</clr-dg-cell>
+            <clr-dg-cell>{{items?.quantity}}</clr-dg-cell>
+            <clr-dg-cell>{{items?.unitName}}</clr-dg-cell>
+            <clr-dg-cell>{{items?.userName}}</clr-dg-cell>
+            <clr-dg-cell>{{items?.dateAdd | date:'dd-MM-yyyy HH:mm'}}</clr-dg-cell>
+            <clr-dg-cell>{{items?.dateModify | date:'dd-MM-yyyy HH:mm'}}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} rzeczy
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+</div>

@@ -1,0 +1,40 @@
+<div>
+    <clr-datagrid>
+        <clr-dg-column [clrDgField]="'status'">Status</clr-dg-column>
+        <clr-dg-column [clrDgField]="'priorityName'">Status</clr-dg-column>
+        <clr-dg-column [clrDgField]="'install'">Nazwa montażu</clr-dg-column>
+        <clr-dg-column [clrDgField]="'userName'">Kto dodał</clr-dg-column>
+        <clr-dg-column [clrDgField]="'dateCreated'">Data utworzenia</clr-dg-column>
+        <clr-dg-column [clrDgField]="'lastModified'">Data ostatniej modyfikacji</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let order of ordersData" [ngClass]="{'tablePriorityNeed': order.priorityStatus === 1, 'tableColor': order.priorityStatus === 2}" >
+            <clr-dg-action-overflow>
+                <button class="action-item" (click)="edit(order.id, order.install, order.installId)">Zobacz</button>
+                <button class="action-item remove" (click)="remove(order.id)" *ngIf="order.status === 'Nowy'">Usuń</button>
+            </clr-dg-action-overflow>
+            <clr-dg-cell>{{order?.status}}</clr-dg-cell>
+            <clr-dg-cell *ngIf="order.priorityStatus === 4">{{order?.priorityName}} {{order?.priorityDate | date:'dd-MM-yyyy'}}</clr-dg-cell>
+            <clr-dg-cell *ngIf="order.priorityStatus !== 4">{{order?.priorityName}}</clr-dg-cell>
+            <clr-dg-cell>{{order?.install}}</clr-dg-cell>
+            <clr-dg-cell>{{order?.userName}}</clr-dg-cell>
+            <clr-dg-cell>{{order?.dateCreated | date:'dd-MM-yyyy HH:mm'}}</clr-dg-cell>
+            <clr-dg-cell>{{order?.lastModified | date:'dd-MM-yyyy HH:mm'}}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+            <div class="flexContainer">
+                <div class="legendRed"></div><span class="legendText">- status PILNE</span>
+                <div class="legendYellow"></div><span class="legendText">- status NA RANO</span>
+            </div>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Ilość na stronie</clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} z {{pagination.totalItems}} zamówień
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+</div>
+
+<div *ngIf="toogleEdit">
+    <app-orders-edit (newItemEvent)="editClose($event)" [orderId]="orderId" [installName]="installName"
+        [installId]="installId"></app-orders-edit>
+</div>

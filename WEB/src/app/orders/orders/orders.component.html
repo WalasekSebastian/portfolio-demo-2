@@ -1,0 +1,28 @@
+<nav class="subnav">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="./list" routerLinkActive="active">Zapotrzebowania</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="cursor: pointer;" (click)="addOrder()">Dodaj nowe</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="./history" routerLinkActive="active">Historia</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="./allactive" routerLinkActive="active">Lista aktywnych przedmiotów</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="main-container">
+    <div class="content-container">
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="toogle">
+    <app-oredrs-add (newItemEvent)="addOrderClose($event)"></app-oredrs-add>
+</div>

@@ -1,0 +1,24 @@
+
+<header class="header-6 test">
+    <div class="branding">
+        <a routerLink="./dashboard" class="nav-link">
+            <img src="../../assets/icon-header.png" width="30px" class="iconLogo">
+            <span class="title" style="color: #fcc200;">DEMO System</span>
+        </a>
+    </div>
+    <div class="header-nav">
+        <a routerLink="./dashboard" routerLinkActive="active" class="nav-link"><span
+                class="nav-text">Pulpit</span></a>
+        <a routerLink="./workers" routerLinkActive="active" class="nav-link" *ngIf="checkPermissions()"><span
+                class="nav-text">Pracownicy</span></a>
+        <a routerLink="./orders" routerLinkActive="active" class="nav-link"><span
+                class="nav-text">Zapotrzebowania</span></a>
+        <a routerLink="./installs" routerLinkActive="active" class="nav-link"><span class="nav-text">Montaże</span></a>
+    </div>
+    <div class="header-actions">
+        <span style="margin-top: 18px; color: #fcc200;">v{{currentApplicationVersion}}</span>
+        <a routerLink="./settings" class="nav-link" routerLinkActive="active"><span class="nav-text">Ustawienia</span></a>
+        <a (click)="logout()" routerLink="/" class="nav-link"><span class="nav-text">Wyloguj</span></a>
+    </div>
+</header>
+<router-outlet></router-outlet> 
